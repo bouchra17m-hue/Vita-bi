@@ -1,6 +1,7 @@
 import { useCallback, useState, useEffect, useMemo } from 'react';
 import { Link } from 'react-router-dom';
 import { useCart } from './useCart';
+import { getProducts } from './api';
 import Footer from './Footer';
 import './Shop.css';
 
@@ -56,8 +57,7 @@ const Shop = () => {
 
   const loadProducts = useCallback(() => {
     setLoading(true);
-    fetch('http://127.0.0.1:8000/api/products')
-      .then(res => res.json())
+    getProducts()
       .then(data => {
         if (Array.isArray(data) && data.length > 0) {
           setProducts(data);

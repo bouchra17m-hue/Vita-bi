@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { useAuth } from '../AuthContext';
 import { useCart } from '../useCart';
 import { useNavigate } from 'react-router-dom';
+import { createOrder } from '../api';
 import './PaymentModal.css';
 
 const PaymentModal = ({ isOpen, onClose, totalAmount }) => {
@@ -103,43 +104,28 @@ const PaymentModal = ({ isOpen, onClose, totalAmount }) => {
     // Simulate 2 seconds of bank secure processing
     setTimeout(async () => {
       try {
-        const response = await fetch('http://127.0.0.1:8000/api/orders', {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-            'Accept': 'application/json',
-            'Authorization': `Bearer ${token}`
-          },
-          body: JSON.stringify({
-            items: cartItems.map(item => ({
-              id: item.id,
-              quantity: 1,
-              price: item.price
-            }))
-          })
+        const data = await createOrder(token, {
+          items: cartItems.map(item => ({
+            id: item.id,
+            quantity: 1,
+            price: item.price
+          }))
         });
 
-        const data = await response.json();
+        // Step 2: Show successful payment checkmark screen
+        setPaymentStep('success');
+        
+        // Clear cart state
+        clearCart();
 
-        if (response.ok) {
-          // Step 2: Show successful payment checkmark screen
-          setPaymentStep('success');
-          
-          // Clear cart state
-          clearCart();
-
-          // Wait 2.5 seconds to show the success checkmark before redirecting
-          setTimeout(() => {
-            onClose();
-            navigate('/profile');
-          }, 2500);
-        } else {
-          setPaymentStep('form');
-          alert(data.message || 'Erreur lors de la commande');
-        }
+        // Wait 2.5 seconds to show the success checkmark before redirecting
+        setTimeout(() => {
+          onClose();
+          navigate('/profile');
+        }, 2500);
       } catch (err) {
         setPaymentStep('form');
-        alert('Erreur réseau lors de la commande');
+        alert(err.message || 'Erreur lors de la commande');
       }
     }, 2000);
   };

@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { useAuth } from './AuthContext';
+import { getRecipes, getNutritionLogs, createNutritionLog } from './api';
 import './Nutrition.css';
 import Footer from './Footer';
 
@@ -14,8 +15,7 @@ const Nutrition = () => {
 
   useEffect(() => {
     // Récupérer les recettes depuis le backend
-    fetch('http://127.0.0.1:8000/api/recipes')
-      .then(res => res.json())
+    getRecipes()
       .then(data => {
         setRecipes(data);
         setLoading(false);
@@ -29,13 +29,7 @@ const Nutrition = () => {
   useEffect(() => {
     // Récupérer le journal nutritionnel d'aujourd'hui
     if (token) {
-      fetch('http://127.0.0.1:8000/api/nutrition-logs', {
-        headers: {
-          'Authorization': `Bearer ${token}`,
-          'Accept': 'application/json'
-        }
-      })
-        .then(res => res.json())
+      getNutritionLogs(token)
         .then(data => {
           setLogs(data);
         })
@@ -50,32 +44,19 @@ const Nutrition = () => {
     }
 
     try {
-      const response = await fetch('http://127.0.0.1:8000/api/nutrition-logs', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-          'Accept': 'application/json',
-          'Authorization': `Bearer ${token}`
-        },
-        body: JSON.stringify({
-          recipe_id: recipe.id,
-          name: recipe.name,
-          kcal: recipe.kcal,
-          protein: recipe.protein
-        })
+      const data = await createNutritionLog(token, {
+        recipe_id: recipe.id,
+        name: recipe.name,
+        kcal: recipe.kcal,
+        protein: recipe.protein
       });
 
-      const data = await response.json();
-
-      if (response.ok) {
-        alert(`${recipe.name} ajouté à votre journée !`);
-        setLogs(prev => [data.log, ...prev]);
-        setSelectedRecipe(null);
-      } else {
-        alert(data.message || "Erreur lors de l'enregistrement");
-      }
+      alert(`${recipe.name} ajouté à votre journée !`);
+      setLogs(prev => [data.log, ...prev]);
+      setSelectedRecipe(null);
     } catch (err) {
-      alert("Erreur réseau");
+      console.error("Erreur lors de l'enregistrement:", err);
+      alert("Erreur lors de l'enregistrement");
     }
   };
 

@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react';
 import { useAuth } from './AuthContext';
 import { useNavigate, Link } from 'react-router-dom';
+import { login as apiLogin } from './api';
 import './Auth.css';
 
 const Login = () => {
@@ -20,25 +21,11 @@ const Login = () => {
     setError('');
 
     try {
-      const response = await fetch('http://127.0.0.1:8000/api/login', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-          'Accept': 'application/json'
-        },
-        body: JSON.stringify({ email, password })
-      });
-
-      const data = await response.json();
-
-      if (response.ok) {
-        login(data.access_token, data.user);
-        navigate('/shop');
-      } else {
-        setError(data.message || 'Identifiants incorrects');
-      }
+      const data = await apiLogin(email, password);
+      login(data.access_token, data.user);
+      navigate('/shop');
     } catch (err) {
-      setError('Erreur de connexion au serveur');
+      setError(err.message || 'Identifiants incorrects');
     }
   };
 

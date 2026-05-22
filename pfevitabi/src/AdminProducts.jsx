@@ -1,9 +1,8 @@
 import { useEffect, useMemo, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { useAuth } from './AuthContext';
+import { getProducts } from './api';
 import './AdminProducts.css';
-
-const API_URL = 'http://127.0.0.1:8000/api/products';
 
 const emptyForm = {
   name: '',
@@ -42,8 +41,7 @@ const AdminProducts = () => {
 
   const fetchProducts = () => {
     setLoading(true);
-    fetch(API_URL)
-      .then((res) => res.json())
+    getProducts()
       .then((data) => setProducts(Array.isArray(data) ? data : []))
       .catch(() => setError('Impossible de charger les produits. Vérifiez le backend Laravel.'))
       .finally(() => setLoading(false));

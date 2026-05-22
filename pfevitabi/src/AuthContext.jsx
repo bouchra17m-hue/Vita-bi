@@ -1,4 +1,5 @@
 import { createContext, useState, useEffect, useContext } from 'react';
+import { getUser } from './api';
 
 const AuthContext = createContext();
 
@@ -10,26 +11,16 @@ export const AuthProvider = ({ children }) => {
   useEffect(() => {
     if (token) {
       // Vérifier le token et récupérer les infos utilisateur
-      fetch('http://127.0.0.1:8000/api/user', {
-        headers: {
-          'Authorization': `Bearer ${token}`
-        }
-      })
-      .then(res => {
-        if (res.ok) {
-          return res.json();
-        }
-        throw new Error('Token invalide');
-      })
-      .then(data => {
-        setUser(data);
-      })
-      .catch(() => {
-        logout();
-      })
-      .finally(() => {
-        setLoading(false);
-      });
+      getUser(token)
+        .then(data => {
+          setUser(data);
+        })
+        .catch(() => {
+          logout();
+        })
+        .finally(() => {
+          setLoading(false);
+        });
     } else {
       setLoading(false);
     }

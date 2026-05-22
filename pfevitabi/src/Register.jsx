@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react';
 import { useAuth } from './AuthContext';
 import { useNavigate, Link } from 'react-router-dom';
+import { register as apiRegister } from './api';
 import './Auth.css';
 
 const Register = () => {
@@ -21,25 +22,11 @@ const Register = () => {
     setError('');
 
     try {
-      const response = await fetch('http://127.0.0.1:8000/api/register', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-          'Accept': 'application/json'
-        },
-        body: JSON.stringify({ name, email, password })
-      });
-
-      const data = await response.json();
-
-      if (response.ok) {
-        login(data.access_token, data.user);
-        navigate('/shop');
-      } else {
-        setError(data.message || 'Erreur lors de l\'inscription');
-      }
+      const data = await apiRegister(name, email, password, password);
+      login(data.access_token, data.user);
+      navigate('/shop');
     } catch (err) {
-      setError('Erreur de connexion au serveur');
+      setError(err.message || 'Erreur lors de l\'inscription');
     }
   };
 

@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react';
 import { useAuth } from './AuthContext';
 import { useNavigate } from 'react-router-dom';
+import { getOrders } from './api';
 
 const Profile = () => {
   const { user, token } = useAuth();
@@ -14,13 +15,7 @@ const Profile = () => {
       return;
     }
 
-    fetch('http://127.0.0.1:8000/api/orders', {
-      headers: {
-        'Authorization': `Bearer ${token}`,
-        'Accept': 'application/json'
-      }
-    })
-      .then(res => res.json())
+    getOrders(token)
       .then(data => {
         setOrders(data);
         setLoading(false);
