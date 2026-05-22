@@ -13,7 +13,7 @@ const mockRecipes = [
     category: 'Petit-déjeuner',
     kcal: 250,
     protein: 25,
-    img: 'https://lh3.googleusercontent.com/aida-public/AB6AXuC_bA3AN51XFXpdoY9UYtutmU8NUMCoLSwDu4JlsN3qHQXhdJ_aBbfcCsZY7LDjBKBmZ98U_joIe08bJdMHZf0g_Z1klOl5NTXmcg4HQ1yQaXhxtr3egssxTo_yS9wodHybJoq4PcDbQmgJ2n4bysKnTN7m_xJb9W-BYGl9JGysUIlNuO_0YAVRfvr-ru_4WbjhmL0SDFSO2QBaRT_NV7XCqwriwj6UycXXCPtYxVpkBpNUrRSvO0Z09gtXXcNqDd-tKSA335c8lrk',
+    img: 'https://images.unsplash.com/photo-1590573751149-2f01db1e8e17?w=500&h=300&fit=crop',
     ingredients: ['Fraises fraiches', 'Yaourt grec', 'Lait d\'amande', 'Miel'],
     steps: ['Mixer les fraises', 'Ajouter le yaourt', 'Verser le lait', 'Saupoudrer de miel']
   },
@@ -23,7 +23,7 @@ const mockRecipes = [
     category: 'Déjeuner',
     kcal: 350,
     protein: 18,
-    img: 'https://lh3.googleusercontent.com/aida-public/AB6AXuCJvqMvy4SYrWIJ8qmToKlxcWuW3_QW5KQi4EKEq4Kh29aEvlhbn2RtlgYJQSbqvPcULpFWEZuwA4MmudK6KApEtoq94wjy1sMnMeJwTvDnCEl0vxx35sUUvRMeBrHDvE5yjfeLVGjX4szHHWGj7A9-wlMpRoiMtSoRCn6UELs0QREpp5HD0lKXgg7pFSsQpnmHyG50XS8Xor3tqZiUfNQDxiUKVb3H5fzhwz5iQvmawmvllGcgPgm5Igp3JkqGPF75cZpdJghP9pQ',
+    img: 'https://images.unsplash.com/photo-1540189549336-e6e99c3679fe?w=500&h=300&fit=crop',
     ingredients: ['Épinards', 'Tomates', 'Concombre', 'Vinaigrette légère'],
     steps: ['Laver les légumes', 'Couper en morceaux', 'Mélanger', 'Ajouter vinaigrette']
   },
@@ -33,7 +33,7 @@ const mockRecipes = [
     category: 'Snacks',
     kcal: 180,
     protein: 15,
-    img: 'https://lh3.googleusercontent.com/aida-public/AB6AXuB0SDZQKAUPz5EpJCnnRoWgixlv--uY7r3DoZrXubDwsg4kYXovfIsbpe62I4DFZIb3IBY4bvycBKAo0mDKf6YBodaBzmfQljTCcZnGdZpR4BJqZPak52x-k32M6_7JRcZMdGtpatnCwxJe6pas9noJKSYuKZlIij1U-6HZdqUqQ2k5w0dPQl8OW4HaPKfXnhGtEn4irFKwXMw-f2P_7xItLYW0F5dwvzFmej6fiKygS97RoN9rmEqYR9lvUFD_JKKv3APR44P42qo',
+    img: 'https://images.unsplash.com/photo-1638199706092-0e797eae1ce7?w=500&h=300&fit=crop',
     ingredients: ['Flocons d\'avoine', 'Poudre de protéine', 'Beurre de cacahuète', 'Miel'],
     steps: ['Mélanger ingrédients secs', 'Ajouter beurre', 'Former les barres', 'Réfrigérer']
   },
@@ -43,7 +43,7 @@ const mockRecipes = [
     category: 'Dîner',
     kcal: 480,
     protein: 45,
-    img: 'https://lh3.googleusercontent.com/aida-public/AB6AXuCB9M-pCL41dMmY9aRNzlBGugpJ2gKtlBmPQP74aVlwN6ThcJIuLlb5vu4mJU0MEntEA3cT6Z7kVLSwPoEan8nm3XvBeMPR9tcKFxNKdh77ANkotVTh2b7iLa3LPwbQ9jZHbeAfj1Y8uXWjfiVpIhRslhNFz6yudZGkOEBGklJVilB3eUZV0js33dC2boBB_xFMtzEhMl9rI7JtvXH9ejFspja9HWTE5PJfpDegeb9FnCfbJClLEokgLWmHX5nVwBZ8sfeCdA4LGBg',
+    img: 'https://images.unsplash.com/photo-1598103442097-8b74394b95c6?w=500&h=300&fit=crop',
     ingredients: ['Filet de poulet', 'Brocoli', 'Carottes', 'Épices'],
     steps: ['Assaisonner poulet', 'Griller 20 min', 'Cuire légumes', 'Servir chaud']
   },
