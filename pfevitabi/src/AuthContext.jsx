@@ -1,39 +1,56 @@
 import { createContext, useState, useEffect, useContext } from 'react';
 import { getUser } from './api';
 
+const DEMO_TOKEN_PREFIX = 'demo-token-';
 const AuthContext = createContext();
 
 export const AuthProvider = ({ children }) => {
-  const [user, setUser] = useState(null);
+  const [user, setUser] = useState(() => {
+    const savedUser = localStorage.getItem('user');
+    return savedUser ? JSON.parse(savedUser) : null;
+  });
   const [token, setToken] = useState(localStorage.getItem('token') || null);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    if (token) {
-      // Vérifier le token et récupérer les infos utilisateur
-      getUser(token)
-        .then(data => {
-          setUser(data);
-        })
-        .catch(() => {
-          logout();
-        })
-        .finally(() => {
-          setLoading(false);
-        });
-    } else {
-      setLoading(false);
-    }
+    const initializeUser = async () => {
+      if (!token) {
+        setLoading(false);
+        return;
+      }
+
+      if (token.startsWith(DEMO_TOKEN_PREFIX)) {
+        const savedUser = localStorage.getItem('user');
+        if (savedUser) {
+          setUser(JSON.parse(savedUser));
+        }
+        setLoading(false);
+        return;
+      }
+
+      try {
+        const data = await getUser(token);
+        setUser(data);
+      } catch (error) {
+        logout();
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    initializeUser();
   }, [token]);
 
   const login = (newToken, userData) => {
     localStorage.setItem('token', newToken);
+    localStorage.setItem('user', JSON.stringify(userData));
     setToken(newToken);
     setUser(userData);
   };
 
   const logout = () => {
     localStorage.removeItem('token');
+    localStorage.removeItem('user');
     setToken(null);
     setUser(null);
   };
