@@ -1,7 +1,6 @@
 import { createContext, useState, useEffect, useContext } from 'react';
 import { getUser } from './api';
 
-const DEMO_TOKEN_PREFIX = 'demo-token-';
 const AuthContext = createContext();
 
 export const AuthProvider = ({ children }) => {
@@ -15,15 +14,6 @@ export const AuthProvider = ({ children }) => {
   useEffect(() => {
     const initializeUser = async () => {
       if (!token) {
-        setLoading(false);
-        return;
-      }
-
-      if (token.startsWith(DEMO_TOKEN_PREFIX)) {
-        const savedUser = localStorage.getItem('user');
-        if (savedUser) {
-          setUser(JSON.parse(savedUser));
-        }
         setLoading(false);
         return;
       }

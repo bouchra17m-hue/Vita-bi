@@ -25,7 +25,7 @@ const Login = () => {
       login(data.access_token, data.user);
       navigate('/shop');
     } catch (err) {
-      setError(err.message || 'Identifiants incorrects');
+      setError(err.message || 'Erreur de connexion au serveur');
     }
   };
 

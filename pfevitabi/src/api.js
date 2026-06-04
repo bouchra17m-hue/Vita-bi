@@ -1,11 +1,35 @@
 // API Configuration
-const API_URL = import.meta.env.VITE_API_URL || 'http://127.0.0.1:8000';
+const API_URL = (import.meta.env.VITE_API_URL || 'http://127.0.0.1:8000').replace(/\/$/, '');
 
 export const apiCall = async (endpoint, options = {}) => {
   const url = `${API_URL}${endpoint}`;
-  const response = await fetch(url, options);
+  const headers = {
+    'Accept': 'application/json',
+    ...(options.headers || {})
+  };
+  let response;
+
+  try {
+    response = await fetch(url, { ...options, headers });
+  } catch {
+    throw new Error(`Impossible de joindre le backend Laravel (${API_URL}). Verifiez que "php artisan serve" est lance.`);
+  }
+
   if (!response.ok) {
-    throw new Error(`API Error: ${response.status} ${response.statusText}`);
+    let message = `API Error: ${response.status} ${response.statusText}`;
+
+    try {
+      const data = await response.json();
+      if (data.errors) {
+        message = Object.values(data.errors).flat().join(' ');
+      } else {
+        message = data.message || message;
+      }
+    } catch {
+      // Keep the HTTP status message when the API does not return JSON.
+    }
+
+    throw new Error(message);
   }
   return response.json();
 };
@@ -71,6 +95,40 @@ export const createNutritionLog = (token, logData) => {
 // Products endpoints
 export const getProducts = () => {
   return apiCall('/api/products');
+};
+
+export const createProduct = (token, productData) => {
+  return apiCall('/api/products', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+      'Accept': 'application/json',
+      'Authorization': `Bearer ${token}`
+    },
+    body: JSON.stringify(productData)
+  });
+};
+
+export const updateProduct = (token, productId, productData) => {
+  return apiCall(`/api/products/${productId}`, {
+    method: 'PUT',
+    headers: {
+      'Content-Type': 'application/json',
+      'Accept': 'application/json',
+      'Authorization': `Bearer ${token}`
+    },
+    body: JSON.stringify(productData)
+  });
+};
+
+export const deleteProduct = (token, productId) => {
+  return apiCall(`/api/products/${productId}`, {
+    method: 'DELETE',
+    headers: {
+      'Accept': 'application/json',
+      'Authorization': `Bearer ${token}`
+    }
+  });
 };
 
 // Orders endpoints

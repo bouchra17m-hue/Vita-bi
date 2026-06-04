@@ -1,7 +1,7 @@
 import { useEffect, useMemo, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { useAuth } from './AuthContext';
-import { getProducts } from './api';
+import { getProducts, createProduct, updateProduct, deleteProduct } from './api';
 import './AdminProducts.css';
 
 const emptyForm = {
@@ -96,17 +96,10 @@ const AdminProducts = () => {
     setMessage('');
 
     try {
-      const res = await fetch(editingId ? `${API_URL}/${editingId}` : API_URL, {
-        method: editingId ? 'PUT' : 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-          Authorization: `Bearer ${token}`,
-        },
-        body: JSON.stringify(payload),
-      });
-
-      if (!res.ok) {
-        throw new Error('La sauvegarde a échoué.');
+        if (editingId) {
+        await updateProduct(token, editingId, payload);
+      } else {
+        await createProduct(token, payload);
       }
 
       setMessage(editingId ? 'Produit modifié avec succès.' : 'Produit ajouté avec succès. Il est maintenant visible dans la boutique.');
@@ -120,7 +113,7 @@ const AdminProducts = () => {
     }
   };
 
-  const deleteProduct = async (product) => {
+  const removeProduct = async (product) => {
     if (!token) {
       setError('Connectez-vous avant de supprimer un produit.');
       return;
@@ -133,16 +126,7 @@ const AdminProducts = () => {
     setMessage('');
 
     try {
-      const res = await fetch(`${API_URL}/${product.id}`, {
-        method: 'DELETE',
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      });
-
-      if (!res.ok) {
-        throw new Error('La suppression a échoué.');
-      }
+      await deleteProduct(token, product.id);
 
       setMessage('Produit supprimé avec succès.');
       notifyProductsUpdated();
@@ -320,7 +304,7 @@ const AdminProducts = () => {
                           <button className="btn" type="button" onClick={() => editProduct(product)} aria-label={`Modifier ${product.name}`}>
                             <span className="material-symbols-outlined">edit</span>
                           </button>
-                          <button className="btn danger" type="button" onClick={() => deleteProduct(product)} aria-label={`Supprimer ${product.name}`}>
+                          <button className="btn danger" type="button" onClick={() => removeProduct(product)} aria-label={`Supprimer ${product.name}`}>
                             <span className="material-symbols-outlined">delete</span>
                           </button>
                         </div>

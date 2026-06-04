@@ -4,11 +4,6 @@ import { useNavigate, Link } from 'react-router-dom';
 import { register as apiRegister } from './api';
 import './Auth.css';
 
-const demoRegisterFallback = (name, email) => ({
-  access_token: 'demo-token-' + Date.now(),
-  user: { id: 1, name, email }
-});
-
 const Register = () => {
   const [name, setName] = useState('');
   const [email, setEmail] = useState('');
@@ -31,9 +26,7 @@ const Register = () => {
       login(data.access_token, data.user);
       navigate('/shop');
     } catch (err) {
-      const fallback = demoRegisterFallback(name || 'Demo User', email || 'demo@vitabi.com');
-      login(fallback.access_token, fallback.user);
-      navigate('/shop');
+      setError(err.message || 'Erreur lors de l’inscription. Veuillez réessayer.');
     }
   };
 
