@@ -1,5 +1,8 @@
 // API Configuration
 const API_URL = (import.meta.env.VITE_API_URL || 'http://127.0.0.1:8000').replace(/\/$/, '');
+const IS_PRODUCTION = import.meta.env.PROD;
+
+export const getApiUrl = () => API_URL;
 
 export const apiCall = async (endpoint, options = {}) => {
   const url = `${API_URL}${endpoint}`;
@@ -11,8 +14,12 @@ export const apiCall = async (endpoint, options = {}) => {
 
   try {
     response = await fetch(url, { ...options, headers });
-  } catch {
-    throw new Error(`Impossible de joindre le backend Laravel (${API_URL}). Verifiez que "php artisan serve" est lance.`);
+  } catch (error) {
+    const isDev = !IS_PRODUCTION;
+    const errorMsg = isDev 
+      ? `Impossible de joindre le backend Laravel (${API_URL}).\n\nDéveloppement: Vérifiez que "php artisan serve" est lancé.\n\nErreur: ${error.message}`
+      : `Impossible de joindre le serveur (${API_URL}).\n\nVérifiez votre connexion internet et que le serveur est actif.\n\nErreur: ${error.message}`;
+    throw new Error(errorMsg);
   }
 
   if (!response.ok) {
@@ -32,6 +39,16 @@ export const apiCall = async (endpoint, options = {}) => {
     throw new Error(message);
   }
   return response.json();
+};
+
+// Health check endpoint
+export const checkBackendHealth = async () => {
+  try {
+    const response = await fetch(`${API_URL}/api/test`);
+    return response.ok;
+  } catch {
+    return false;
+  }
 };
 
 // Auth endpoints
