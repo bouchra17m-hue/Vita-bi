@@ -56,8 +56,8 @@ const Navbar = () => {
 
             </NavLink>
             {user?.is_admin && (
-              <NavLink className="nav-link" to="/admin" end>
-              Admin
+              <NavLink className="nav-link" to="/admin/dashboard" end>
+              Dashboard
 
               </NavLink>
             )}

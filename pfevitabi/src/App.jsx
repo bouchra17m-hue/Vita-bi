@@ -12,6 +12,7 @@ import Register from './Register';
 import Profile from './Profile';
 import About from './About';
 import AdminProducts from './AdminProducts';
+import AdminDashboard from './AdminDashboard';
 import CustomCursor from './CustomCursor';
 import ScrollToTop from './ScrollToTop';
 import WaitlistModal from './WaitlistModal';
@@ -56,7 +57,8 @@ function App() {
                 <Route path="/register" element={<Register />} />
                 <Route path="/profile" element={<Profile />} />
                 <Route path="/about" element={<About />} />
-                <Route path="/admin" element={<AdminProducts />} />
+                 <Route path="/admin" element={<AdminProducts />} />
+                 <Route path="/admin/dashboard" element={<AdminDashboard />} />
               </Routes>
             </main>
             <AICoach />
