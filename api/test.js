@@ -1,4 +1,5 @@
 // Test endpoint to check if API is working
+// Vercel Serverless API
 export default function handler(req, res) {
   // CORS headers
   res.setHeader('Access-Control-Allow-Origin', '*');
