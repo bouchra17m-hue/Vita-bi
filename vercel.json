@@ -1,21 +1,9 @@
 {
   "version": 2,
-  "buildCommand": "npm --prefix pfevitabi run build",
+  "buildCommand": "cd pfevitabi && npm install && npm run build",
   "outputDirectory": "pfevitabi/dist",
   "routes": [
     { "handle": "filesystem" },
     { "src": "/(.*)", "dest": "/index.html" }
-  ],
-  "env": {
-    "VITE_API_URL": "@vite_api_url"
-  },
-  "builds": [
-    {
-      "src": "pfevitabi/package.json",
-      "use": "@vercel/static-build",
-      "config": {
-        "distDir": "dist"
-      }
-    }
   ]
 }
