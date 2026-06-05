@@ -1,10 +1,12 @@
 import './Auth.css';
 import { useEffect, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { useAuth } from './AuthContext';
 import { login, register } from './api';
 
 const Auth = () => {
   const { login: authLogin } = useAuth();
+  const navigate = useNavigate();
   const [loginData, setLoginData] = useState({ email: '', password: '' });
   const [registerData, setRegisterData] = useState({ name: '', email: '', password: '', password_confirmation: '' });
   const [error, setError] = useState('');
@@ -22,7 +24,10 @@ const Auth = () => {
     try {
       const response = await login(loginData.email, loginData.password);
       authLogin(response.access_token, response.user);
-      window.location.href = '/';
+      // Small delay to ensure localStorage is written
+      setTimeout(() => {
+        navigate('/');
+      }, 100);
     } catch (err) {
       setError(err.message);
     } finally {
@@ -37,7 +42,10 @@ const Auth = () => {
     try {
       const response = await register(registerData.name, registerData.email, registerData.password, registerData.password_confirmation);
       authLogin(response.access_token, response.user);
-      window.location.href = '/';
+      // Small delay to ensure localStorage is written
+      setTimeout(() => {
+        navigate('/');
+      }, 100);
     } catch (err) {
       setError(err.message);
     } finally {
