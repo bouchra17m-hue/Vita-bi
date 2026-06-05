@@ -1,11 +1,49 @@
 import './Auth.css';
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
+import { useAuth } from './AuthContext';
+import { login, register } from './api';
 
 const Auth = () => {
+  const { login: authLogin } = useAuth();
+  const [loginData, setLoginData] = useState({ email: '', password: '' });
+  const [registerData, setRegisterData] = useState({ name: '', email: '', password: '', password_confirmation: '' });
+  const [error, setError] = useState('');
+  const [loading, setLoading] = useState(false);
+
   useEffect(() => {
     document.body.classList.add('auth-page');
     return () => document.body.classList.remove('auth-page');
   }, []);
+
+  const handleLogin = async (e) => {
+    e.preventDefault();
+    setLoading(true);
+    setError('');
+    try {
+      const response = await login(loginData.email, loginData.password);
+      authLogin(response.access_token, response.user);
+      window.location.href = '/';
+    } catch (err) {
+      setError(err.message);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const handleRegister = async (e) => {
+    e.preventDefault();
+    setLoading(true);
+    setError('');
+    try {
+      const response = await register(registerData.name, registerData.email, registerData.password, registerData.password_confirmation);
+      authLogin(response.access_token, response.user);
+      window.location.href = '/';
+    } catch (err) {
+      setError(err.message);
+    } finally {
+      setLoading(false);
+    }
+  };
 
   return (
     <div className="auth-container">
@@ -26,12 +64,22 @@ const Auth = () => {
               <p style={{ color: 'var(--on-surface-variant)', marginTop: '0.5rem' }}>Access your personalized dashboard.</p>
             </div>
 
-            <form style={{ display: 'flex', flexDirection: 'column', gap: '1.5rem' }} onSubmit={(e) => { e.preventDefault(); alert('Connexion réussie !'); window.location.href = '/'; }}>
+            {error && <div style={{ color: 'var(--error)', marginBottom: '1rem', textAlign: 'center' }}>{error}</div>}
+
+            <form style={{ display: 'flex', flexDirection: 'column', gap: '1.5rem' }} onSubmit={handleLogin}>
               <div className="input-group">
                 <label className="input-label">Email Address</label>
                 <div className="input-wrapper">
                   <span className="material-symbols-outlined">mail</span>
-                  <input className="auth-input" placeholder="hello@vitabi.com" type="email" required />
+                  <input 
+                    className="auth-input" 
+                    placeholder="hello@vitabi.com" 
+                    type="email" 
+                    required 
+                    value={loginData.email}
+                    onChange={(e) => setLoginData({...loginData, email: e.target.value})}
+                    disabled={loading}
+                  />
                 </div>
               </div>
 
@@ -41,12 +89,20 @@ const Auth = () => {
                 </div>
                 <div className="input-wrapper">
                   <span className="material-symbols-outlined">lock</span>
-                  <input className="auth-input" placeholder="••••••••" type="password" required />
+                  <input 
+                    className="auth-input" 
+                    placeholder="••••••••" 
+                    type="password" 
+                    required 
+                    value={loginData.password}
+                    onChange={(e) => setLoginData({...loginData, password: e.target.value})}
+                    disabled={loading}
+                  />
                 </div>
               </div>
 
-              <button className="btn-auth-submit" type="submit">
-                <span>Continue Training</span>
+              <button className="btn-auth-submit" type="submit" disabled={loading}>
+                <span>{loading ? 'Connecting...' : 'Continue Training'}</span>
                 <span className="material-symbols-outlined">arrow_forward</span>
               </button>
             </form>
@@ -56,14 +112,62 @@ const Auth = () => {
             <div className="signup-content">
               <span className="signup-badge">New Here?</span>
               <h2 style={{ fontSize: '2.5rem', fontWeight: 900, marginBottom: '1rem', lineHeight: 1.1 }}>Start Your Journey To Peak Vitality.</h2>
+              <ul className="feature-list">
+                <li className="feature-item">
+                  <span className="material-symbols-outlined">check_circle</span>
+                  Personalized nutrition plans
+                </li>
+                <li className="feature-item">
+                  <span className="material-symbols-outlined">check_circle</span>
+                  AI-powered coaching
+                </li>
+                <li className="feature-item">
+                  <span className="material-symbols-outlined">check_circle</span>
+                  Progress tracking dashboard
+                </li>
+              </ul>
             </div>
 
-            <form className="signup-quick-form" onSubmit={(e) => { e.preventDefault(); alert('Inscription réussie !'); window.location.href = '/'; }}>
+            <form className="signup-quick-form" onSubmit={handleRegister}>
               <h3>Create Account</h3>
               <div className="quick-form-inputs">
-                <input className="quick-input" placeholder="Full Name" type="text" required />
-                <input className="quick-input" placeholder="Email Address" type="email" required />
-                <button className="btn-unlock" type="submit">Unlock My Program</button>
+                <input 
+                  className="quick-input" 
+                  placeholder="Full Name" 
+                  type="text" 
+                  required 
+                  value={registerData.name}
+                  onChange={(e) => setRegisterData({...registerData, name: e.target.value})}
+                  disabled={loading}
+                />
+                <input 
+                  className="quick-input" 
+                  placeholder="Email Address" 
+                  type="email" 
+                  required 
+                  value={registerData.email}
+                  onChange={(e) => setRegisterData({...registerData, email: e.target.value})}
+                  disabled={loading}
+                />
+                <input 
+                  className="quick-input" 
+                  placeholder="Password" 
+                  type="password" 
+                  required 
+                  value={registerData.password}
+                  onChange={(e) => setRegisterData({...registerData, password: e.target.value})}
+                  disabled={loading}
+                />
+                <input 
+                  className="quick-input" 
+                  placeholder="Confirm Password" 
+                  type="password" 
+                  required 
+                  value={registerData.password_confirmation}
+                  onChange={(e) => setRegisterData({...registerData, password_confirmation: e.target.value})}
+                  disabled={loading}
+                />
+                <button className="btn-unlock" type="submit" disabled={loading}>Unlock My Program</button>
               </div>
             </form>
           </section>
