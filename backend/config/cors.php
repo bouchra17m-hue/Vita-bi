@@ -6,7 +6,15 @@ return [
 
     'allowed_methods' => ['*'],
 
-    'allowed_origins' => ['http://localhost:5173', 'http://localhost:3000', 'https://vitabi.vercel.app', 'https://*.vercel.app', 'https://vitabi-*.vercel.app'],
+    'allowed_origins' => [
+        'http://localhost:5173',
+        'http://localhost:3000',
+        'https://vitabi.vercel.app',
+        'https://vita-bi.vercel.app',
+        'https://*.vercel.app',
+        'https://vitabi-*.vercel.app',
+        'https://vitabi-backend.boushera-bai.alwaysdata.net',
+    ],
 
     'allowed_origins_patterns' => [],
 
