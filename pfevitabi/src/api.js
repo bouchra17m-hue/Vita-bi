@@ -1,5 +1,23 @@
 // API Configuration
-const API_URL = (import.meta.env.VITE_API_URL || 'https://vitabi-backend.boushera-bai.alwaysdata.net').replace(/\/$/, '');
+// For production on Vercel: use relative paths (same origin)
+// For development: use localhost:8000 or custom backend
+const API_URL = (() => {
+  const envUrl = import.meta.env.VITE_API_URL;
+  
+  // If VITE_API_URL is explicitly set, use it
+  if (envUrl && envUrl.trim()) {
+    return envUrl.replace(/\/$/, '');
+  }
+  
+  // In production (Vercel), use relative paths
+  if (import.meta.env.PROD) {
+    return '';
+  }
+  
+  // In development, use localhost
+  return 'http://127.0.0.1:8000';
+})();
+
 const IS_PRODUCTION = import.meta.env.PROD;
 
 export const getApiUrl = () => API_URL;

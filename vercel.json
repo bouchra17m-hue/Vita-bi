@@ -1,8 +1,24 @@
 {
   "version": 2,
-  "buildCommand": "cd pfevitabi && npm install && npm run build",
+  "buildCommand": "npm install && cd pfevitabi && npm install && npm run build",
   "outputDirectory": "pfevitabi/dist",
+  "env": {
+    "DB_HOST": "@db_host",
+    "DB_PORT": "@db_port",
+    "DB_USERNAME": "@db_username",
+    "DB_PASSWORD": "@db_password",
+    "DB_DATABASE": "@db_database",
+    "JWT_SECRET": "@jwt_secret"
+  },
+  "functions": {
+    "api/**/*.js": {
+      "memory": 1024,
+      "maxDuration": 60,
+      "runtime": "nodejs18.x"
+    }
+  },
   "routes": [
+    { "src": "/api/(.*)", "dest": "/api/$1.js" },
     { "handle": "filesystem" },
     { "src": "/(.*)", "dest": "/index.html" }
   ]
