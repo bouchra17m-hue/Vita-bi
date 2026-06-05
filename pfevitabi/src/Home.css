@@ -169,12 +169,6 @@ p {
   line-height: 1.6;
   color: var(--on-surface-variant);
 }
-  backdrop-filter: blur(10px);
-  border-radius: 14px;
-  border: 1px solid var(--outline-variant);
-  z-index: 2;
-  box-shadow: 0 10px 24px rgba(124, 82, 170, 0.18);
-}
 
 @media (max-width: 1024px) {
   .hero-premium-stats {
