@@ -1,0 +1,33 @@
+services:
+  - type: web
+    name: vitabi-backend
+    env: php
+    buildCommand: "cd backend && composer install --no-dev --optimize-autoloader"
+    startCommand: "cd backend && php artisan migrate --force && php -S 0.0.0.0:10000 -t public"
+    envVars:
+      - key: APP_NAME
+        value: "VitaBi"
+      - key: APP_ENV
+        value: "production"
+      - key: APP_DEBUG
+        value: "false"
+      - key: LOG_CHANNEL
+        value: "stack"
+      - key: DB_CONNECTION
+        value: "mysql"
+      - key: DB_HOST
+        value: "mysql-boushera-bai.alwaysdata.net"
+      - key: DB_PORT
+        value: "3306"
+      - key: DB_DATABASE
+        value: "boushera-bai_vitabi"
+      - key: DB_USERNAME
+        value: "boushera-bai"
+      - key: DB_PASSWORD
+        sync: false
+      - key: CACHE_DRIVER
+        value: "file"
+      - key: QUEUE_CONNECTION
+        value: "sync"
+      - key: SESSION_DRIVER
+        value: "file"
