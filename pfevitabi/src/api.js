@@ -1,5 +1,5 @@
 // API Configuration
-const API_URL = (import.meta.env.VITE_API_URL || 'http://127.0.0.1:8000').replace(/\/$/, '');
+const API_URL = (import.meta.env.VITE_API_URL || 'https://vitabi-backend.boushera-bai.alwaysdata.net').replace(/\/$/, '');
 const IS_PRODUCTION = import.meta.env.PROD;
 
 export const getApiUrl = () => API_URL;
