@@ -34,9 +34,10 @@ export const apiCall = async (endpoint, options = {}) => {
     response = await fetch(url, { ...options, headers });
   } catch (error) {
     const isDev = !IS_PRODUCTION;
+    const displayUrl = API_URL || 'Vercel API';
     const errorMsg = isDev 
-      ? `Impossible de joindre le backend Laravel (${API_URL}).\n\nDéveloppement: Vérifiez que "php artisan serve" est lancé.\n\nErreur: ${error.message}`
-      : `Impossible de joindre le serveur (${API_URL}).\n\nVérifiez votre connexion internet et que le serveur est actif.\n\nErreur: ${error.message}`;
+      ? `Impossible de joindre le backend (${displayUrl}).\n\nDéveloppement: Vérifiez que "php artisan serve" est lancé sur port 8000.\n\nErreur: ${error.message}`
+      : `Impossible de joindre le serveur API.\n\nVérifiez votre connexion internet.\n\nErreur: ${error.message}`;
     throw new Error(errorMsg);
   }
 

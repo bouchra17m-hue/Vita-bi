@@ -16,6 +16,7 @@ export default async function handler(req, res) {
   }
 
   try {
+    console.log('[API] Login request received:', req.body?.email);
     const { email, password } = req.body;
 
     if (!email || !password) {
@@ -28,6 +29,7 @@ export default async function handler(req, res) {
     }
 
     const user = await loginUser(email, password);
+    console.log('[API] User logged in:', user.email);
 
     res.status(200).json({
       message: 'Login successful',
@@ -35,7 +37,7 @@ export default async function handler(req, res) {
       access_token: user.token,
     });
   } catch (error) {
-    console.error('Login error:', error);
+    console.error('[API] Login error:', error);
     res.status(401).json({
       message: error.message,
       errors: { email: [error.message] },

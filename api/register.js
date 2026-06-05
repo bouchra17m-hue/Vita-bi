@@ -16,6 +16,7 @@ export default async function handler(req, res) {
   }
 
   try {
+    console.log('[API] Register request received:', req.body?.email);
     const { name, email, password, password_confirmation } = req.body;
 
     // Validation
@@ -46,6 +47,7 @@ export default async function handler(req, res) {
     }
 
     const user = await registerUser(name, email, password);
+    console.log('[API] User registered:', user.email);
 
     res.status(201).json({
       message: 'User registered successfully',
@@ -53,7 +55,7 @@ export default async function handler(req, res) {
       access_token: user.token,
     });
   } catch (error) {
-    console.error('Register error:', error);
+    console.error('[API] Register error:', error);
     res.status(400).json({
       message: error.message,
       errors: { email: [error.message] },

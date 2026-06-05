@@ -16,10 +16,12 @@ export default async function handler(req, res) {
   }
 
   try {
+    console.log('[API] Products request');
     const products = await query('SELECT * FROM products LIMIT 100', []);
+    console.log('[API] Products found:', products.length);
     res.status(200).json(products);
   } catch (error) {
-    console.error('Products error:', error);
+    console.error('[API] Products error:', error);
     res.status(500).json({
       message: 'Failed to fetch products',
       error: error.message,

@@ -10,13 +10,6 @@
     "DB_DATABASE": "@db_database",
     "JWT_SECRET": "@jwt_secret"
   },
-  "functions": {
-    "api/**/*.js": {
-      "memory": 1024,
-      "maxDuration": 60,
-      "runtime": "nodejs18.x"
-    }
-  },
   "routes": [
     { "src": "/api/(.*)", "dest": "/api/$1.js" },
     { "handle": "filesystem" },
