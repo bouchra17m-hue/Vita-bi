@@ -9,15 +9,15 @@ const STORAGE_KEY = 'vitabi-programs';
 const ACTIVITY_FACTOR = 1.5;
 
 const activityOptions = {
-  low: { label: 'Low Activity', factor: 1.35 },
-  moderate: { label: 'Moderate Activity', factor: 1.5 },
-  high: { label: 'High Activity', factor: 1.7 },
+  low: { label: 'Activite legere', factor: 1.35 },
+  moderate: { label: 'Activite moderee', factor: 1.5 },
+  high: { label: 'Activite elevee', factor: 1.7 },
 };
 
 const experienceOptions = {
-  beginner: 'Beginner',
-  intermediate: 'Intermediate',
-  advanced: 'Advanced',
+  beginner: 'Debutant',
+  intermediate: 'Intermediaire',
+  advanced: 'Avance',
 };
 
 const Calculator = () => {
@@ -82,8 +82,8 @@ const Calculator = () => {
     }
 
     const parsedTrainingDays = Number(trainingDays);
-    if (parsedTrainingDays < 2 || parsedTrainingDays > 6) {
-      setError('Choisissez entre 2 et 6 jours d entrainement par semaine.');
+    if (parsedTrainingDays < 2 || parsedTrainingDays > 7) {
+      setError('Choisissez entre 2 et 7 jours d entrainement par semaine.');
       return null;
     }
 
@@ -120,23 +120,75 @@ const Calculator = () => {
         : `Apport riche en proteines (${protein}g/jour), glucides complexes et collation post-training.`;
 
     const workoutTemplates = {
-      muscle_gain: ['Upper Body Strength', 'Lower Body Strength', 'Push Hypertrophy', 'Pull + Core', 'Legs + Glutes', 'Full Body Pump'],
-      weight_loss: ['Full Body Circuit', 'Zone 2 Cardio', 'Strength + HIIT', 'Core + Mobility', 'Metabolic Conditioning', 'Active Recovery'],
+      muscle_gain: [
+        { title: 'Haut du corps force', focus: 'Developpe couche, tirage, epaules', intensity: 'Lourd controle' },
+        { title: 'Bas du corps force', focus: 'Squat, fentes, ischios, mollets', intensity: 'Progression technique' },
+        { title: 'Push hypertrophie', focus: 'Pectoraux, epaules, triceps', intensity: 'Volume musculaire' },
+        { title: 'Pull + gainage', focus: 'Dos, biceps, posture, core', intensity: 'Controle du mouvement' },
+        { title: 'Jambes + fessiers', focus: 'Hip thrust, presse, chaine posterieure', intensity: 'Tension continue' },
+        { title: 'Full body pump', focus: 'Circuit renfo complet', intensity: 'Densite moderee' },
+        { title: 'Mobilite + rappel technique', focus: 'Mobilite, abdos, points faibles', intensity: 'Recuperation active' },
+      ],
+      weight_loss: [
+        { title: 'Full body circuit', focus: 'Renforcement global en circuit', intensity: 'Rythme soutenu' },
+        { title: 'Cardio zone 2', focus: 'Endurance douce et respiration', intensity: 'Stable' },
+        { title: 'Strength + HIIT', focus: 'Force courte puis intervalles', intensity: 'Elevee' },
+        { title: 'Core + mobilite', focus: 'Gainage, hanches, dos', intensity: 'Controlee' },
+        { title: 'Metabolic conditioning', focus: 'Circuit calories + explosivite', intensity: 'Elevee' },
+        { title: 'Marche active + renfo leger', focus: 'Pas, posture, bas impact', intensity: 'Moderee' },
+        { title: 'Recuperation active', focus: 'Etirements, marche, respiration', intensity: 'Basse' },
+      ],
     };
-    const weekDays = ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
-    const weeklyPlan = workoutTemplates[goal].slice(0, parsedTrainingDays).map((title, index) => ({
-      day: weekDays[index],
-      title,
-      duration: goal === 'weight_loss' ? '45-55 min' : '50-70 min',
-      focus: index % 2 === 0 ? 'Technique + intensity' : 'Volume + control',
-    }));
+    const weekDays = ['Lundi', 'Mardi', 'Mercredi', 'Jeudi', 'Vendredi', 'Samedi', 'Dimanche'];
+    const nutritionFocus = {
+      muscle_gain: [
+        'Glucides complexes autour de l entrainement',
+        'Proteines a chaque repas et collation post-training',
+        'Repas riche en energie avant seance',
+        'Legumes + omega 3 pour soutenir la recuperation',
+        'Collation proteinee 60 min apres entrainement',
+        'Hydratation haute et sel mineral si forte transpiration',
+        'Repas simple, sommeil et digestion facile',
+      ],
+      weight_loss: [
+        'Proteines + fibres pour la satiete',
+        'Glucides controles et legumes volumineux',
+        'Repas leger avant HIIT, proteines apres',
+        'Hydratation + electrolytes, limiter grignotage',
+        'Assiette 50% legumes, 25% proteines, 25% glucides',
+        'Snack fruit + yaourt ou oeufs selon faim',
+        'Repas propre, portions calmes, preparation semaine',
+      ],
+    };
+    const activeIndexes = new Set(Array.from({ length: parsedTrainingDays }, (_, index) => index));
+    const weeklyPlan = weekDays.map((day, index) => {
+      const isTrainingDay = activeIndexes.has(index);
+      const template = workoutTemplates[goal][index];
+      const dayCalories = isTrainingDay ? targetCalories : targetCalories - (goal === 'weight_loss' ? 100 : 150);
+
+      return {
+        day,
+        type: isTrainingDay ? 'Entrainement' : 'Recuperation',
+        title: isTrainingDay ? template.title : 'Repos actif + recuperation',
+        duration: isTrainingDay ? (goal === 'weight_loss' ? '40-55 min' : '50-70 min') : '20-35 min',
+        focus: isTrainingDay ? template.focus : 'Marche douce, mobilite, sommeil',
+        intensity: isTrainingDay ? template.intensity : 'Basse',
+        nutrition: nutritionFocus[goal][index],
+        calories: Math.max(1200, Math.round(dayCalories)),
+        macros: {
+          protein,
+          carbs: Math.max(70, Math.round(carbs * (isTrainingDay ? 1 : 0.82))),
+          fat,
+        },
+      };
+    });
 
     const progression =
       experience === 'advanced'
-        ? 'Increase load 2-5% when all sets feel controlled; add one intensity technique per week.'
+        ? 'Augmentez la charge de 2-5% quand toutes les series sont propres; ajoutez une technique avancee par semaine.'
         : experience === 'intermediate'
-          ? 'Add 1-2 reps each week, then increase weight when the top rep range feels clean.'
-          : 'Master form first; keep 2 reps in reserve and progress slowly every 7-10 days.';
+          ? 'Ajoutez 1-2 repetitions par semaine, puis augmentez la charge quand le haut de la fourchette devient propre.'
+          : 'Maitrisez la technique avant tout; gardez 2 repetitions en reserve et progressez tous les 7-10 jours.';
 
     const nextProgram = {
       profile: {
@@ -196,7 +248,7 @@ const Calculator = () => {
   };
 
   const completion = Math.round(([age, weight, height].filter(Boolean).length + 3) / 6 * 100);
-  const goalLabel = goal === 'weight_loss' ? 'Weight Loss' : 'Muscle Gain';
+  const goalLabel = goal === 'weight_loss' ? 'Perte de poids' : 'Prise de muscle';
   const isAuthenticated = Boolean(user && token);
 
   if (!isAuthenticated) {
@@ -226,20 +278,20 @@ const Calculator = () => {
       <main className="container" style={{ padding: '3rem 1.5rem 6rem' }}>
         {/* Hero Section */}
         <header className="calc-header">
-          <span className="step-badge">Step 1 of 2</span>
+          <span className="step-badge">Programme 7 jours</span>
           <h1 style={{ fontSize: '3rem', fontWeight: 900, marginTop: '1.5rem', marginBottom: '1rem', letterSpacing: '-0.025em' }}>
-            Fuel Your <span style={{ color: 'var(--primary)', fontStyle: 'italic' }}>Vibrancy</span>
+            Construisez votre <span style={{ color: 'var(--primary)', fontStyle: 'italic' }}>programme</span>
           </h1>
           <p style={{ fontSize: '1.125rem', color: 'var(--on-surface-variant)', maxWidth: '42rem', margin: '0 auto' }}>
-            Calculate your personalized nutrition and workout roadmap tailored to your unique body and ambitious goals.
+            Generez un programme nutrition et entrainement sur 7 jours, adapte a votre objectif et votre niveau.
           </p>
         </header>
 
         {/* Progress Tracker */}
         <div className="progress-tracker">
           <div className="flex justify-between items-center mb-2">
-            <span style={{ fontSize: '0.875rem', fontWeight: 700, color: 'var(--primary)' }}>Biometric Profile</span>
-            <span style={{ fontSize: '0.875rem', fontWeight: 500, color: 'var(--on-surface-variant)' }}>{completion}% Complete</span>
+            <span style={{ fontSize: '0.875rem', fontWeight: 700, color: 'var(--primary)' }}>Profil complet</span>
+            <span style={{ fontSize: '0.875rem', fontWeight: 500, color: 'var(--on-surface-variant)' }}>{completion}% complet</span>
           </div>
           <div className="progress-bar-container">
             <div className="progress-bar-fill" style={{ width: `${completion}%` }}></div>
@@ -252,7 +304,7 @@ const Calculator = () => {
           <div className="bento-panel-left white-card">
             <h3 className="text-xl font-bold mb-8 flex items-center gap-2">
               <span className="material-symbols-outlined" style={{ color: 'var(--primary)' }}>accessibility_new</span>
-              Personal Details
+              Informations personnelles
             </h3>
             <div className="grid" style={{ gridTemplateColumns: 'repeat(auto-fit, minmax(250px, 1fr))', gap: '2rem' }}>
               <div className="flex flex-col gap-2">
@@ -260,32 +312,32 @@ const Calculator = () => {
                 <input className="input-pill" placeholder="25" type="number" value={age} onChange={(e) => setAge(e.target.value)} />
               </div>
               <div className="flex flex-col gap-2">
-                <label style={{ fontSize: '0.875rem', fontWeight: 700, color: 'var(--on-surface-variant)', marginLeft: '0.5rem' }}>Gender</label>
+                <label style={{ fontSize: '0.875rem', fontWeight: 700, color: 'var(--on-surface-variant)', marginLeft: '0.5rem' }}>Genre</label>
                 <div className="flex gap-4">
                   <button className={`btn ${gender === 'male' ? 'btn-primary' : ''}`} style={{ flex: 1, padding: '1rem', borderRadius: '9999px', display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '0.5rem', backgroundColor: gender === 'male' ? '' : 'var(--surface-container-high)' }} onClick={() => setGender('male')}>
-                    <span className="material-symbols-outlined">male</span> Male
+                    <span className="material-symbols-outlined">male</span> Homme
                   </button>
                   <button className={`btn ${gender === 'female' ? 'btn-primary' : ''}`} style={{ flex: 1, padding: '1rem', borderRadius: '9999px', display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '0.5rem', backgroundColor: gender === 'female' ? '' : 'var(--surface-container-high)' }} onClick={() => setGender('female')}>
-                    <span className="material-symbols-outlined">female</span> Female
+                    <span className="material-symbols-outlined">female</span> Femme
                   </button>
                 </div>
               </div>
               <div className="flex flex-col gap-2">
-                <label style={{ fontSize: '0.875rem', fontWeight: 700, color: 'var(--on-surface-variant)', marginLeft: '0.5rem' }}>Weight (kg)</label>
+                <label style={{ fontSize: '0.875rem', fontWeight: 700, color: 'var(--on-surface-variant)', marginLeft: '0.5rem' }}>Poids (kg)</label>
                 <div style={{ position: 'relative' }}>
                   <input className="input-pill" placeholder="70" type="number" value={weight} onChange={(e) => setWeight(e.target.value)} />
                   <span style={{ position: 'absolute', right: '1.5rem', top: '1rem', fontWeight: 700, color: 'var(--on-surface-variant)' }}>kg</span>
                 </div>
               </div>
               <div className="flex flex-col gap-2">
-                <label style={{ fontSize: '0.875rem', fontWeight: 700, color: 'var(--on-surface-variant)', marginLeft: '0.5rem' }}>Height (cm)</label>
+                <label style={{ fontSize: '0.875rem', fontWeight: 700, color: 'var(--on-surface-variant)', marginLeft: '0.5rem' }}>Taille (cm)</label>
                 <div style={{ position: 'relative' }}>
                   <input className="input-pill" placeholder="175" type="number" value={height} onChange={(e) => setHeight(e.target.value)} />
                   <span style={{ position: 'absolute', right: '1.5rem', top: '1rem', fontWeight: 700, color: 'var(--on-surface-variant)' }}>cm</span>
                 </div>
               </div>
               <div className="flex flex-col gap-2">
-                <label style={{ fontSize: '0.875rem', fontWeight: 700, color: 'var(--on-surface-variant)', marginLeft: '0.5rem' }}>Activity Level</label>
+                <label style={{ fontSize: '0.875rem', fontWeight: 700, color: 'var(--on-surface-variant)', marginLeft: '0.5rem' }}>Activite</label>
                 <select className="input-pill" value={activity} onChange={(e) => setActivity(e.target.value)}>
                   {Object.entries(activityOptions).map(([key, option]) => (
                     <option key={key} value={key}>{option.label}</option>
@@ -293,10 +345,10 @@ const Calculator = () => {
                 </select>
               </div>
               <div className="flex flex-col gap-2">
-                <label style={{ fontSize: '0.875rem', fontWeight: 700, color: 'var(--on-surface-variant)', marginLeft: '0.5rem' }}>Training Days</label>
+                <label style={{ fontSize: '0.875rem', fontWeight: 700, color: 'var(--on-surface-variant)', marginLeft: '0.5rem' }}>Jours entrainement</label>
                 <select className="input-pill" value={trainingDays} onChange={(e) => setTrainingDays(e.target.value)}>
-                  {[2, 3, 4, 5, 6].map((dayCount) => (
-                    <option key={dayCount} value={dayCount}>{dayCount} days / week</option>
+                  {[2, 3, 4, 5, 6, 7].map((dayCount) => (
+                    <option key={dayCount} value={dayCount}>{dayCount} jours / semaine</option>
                   ))}
                 </select>
               </div>
@@ -306,7 +358,7 @@ const Calculator = () => {
           {/* Right Panel: Goal Selection */}
           <div className="bento-panel-right flex flex-col gap-6">
             <div className="experience-card white-card">
-              <p className="mini-title">Training Level</p>
+              <p className="mini-title">Niveau</p>
               <div className="experience-options">
                 {Object.entries(experienceOptions).map(([key, label]) => (
                   <button
@@ -327,8 +379,8 @@ const Calculator = () => {
                   {goal === 'muscle_gain' && <span className="material-symbols-outlined" style={{ fontSize: '14px', color: 'white' }}>check</span>}
                 </div>
               </div>
-              <h4 style={{ fontSize: '1.25rem', fontWeight: 700, color: 'var(--on-secondary-container)' }}>Muscle Gain</h4>
-              <p style={{ fontSize: '0.875rem', color: 'var(--on-secondary-fixed-variant)', marginTop: '0.5rem', lineHeight: 1.5 }}>Focus on protein-rich meals and progressive strength training to build lean mass.</p>
+              <h4 style={{ fontSize: '1.25rem', fontWeight: 700, color: 'var(--on-secondary-container)' }}>Prise de muscle</h4>
+              <p style={{ fontSize: '0.875rem', color: 'var(--on-secondary-fixed-variant)', marginTop: '0.5rem', lineHeight: 1.5 }}>Repas riches en proteines et progression en musculation pour construire du muscle.</p>
             </div>
             <div className="goal-card-new" style={{ backgroundColor: 'var(--tertiary-container)', border: goal === 'weight_loss' ? '2px solid var(--tertiary)' : '2px solid transparent', cursor: 'pointer' }} onClick={() => setGoal('weight_loss')}>
               <div className="flex justify-between items-start mb-4">
@@ -337,8 +389,8 @@ const Calculator = () => {
                   {goal === 'weight_loss' && <span className="material-symbols-outlined" style={{ fontSize: '14px', color: 'white' }}>check</span>}
                 </div>
               </div>
-              <h4 style={{ fontSize: '1.25rem', fontWeight: 700, color: 'var(--on-tertiary-container)' }}>Weight Loss</h4>
-              <p style={{ fontSize: '0.875rem', color: 'var(--on-tertiary-fixed-variant)', marginTop: '0.5rem', lineHeight: 1.5 }}>Caloric deficit nutrition plans combined with high-intensity metabolic conditioning.</p>
+              <h4 style={{ fontSize: '1.25rem', fontWeight: 700, color: 'var(--on-tertiary-container)' }}>Perte de poids</h4>
+              <p style={{ fontSize: '0.875rem', color: 'var(--on-tertiary-fixed-variant)', marginTop: '0.5rem', lineHeight: 1.5 }}>Deficit calorique controle avec cardio, renforcement et habitudes durables.</p>
             </div>
           </div>
         </section>
@@ -353,11 +405,11 @@ const Calculator = () => {
             {isLoading ? (
               <>
                 <span className="loader" aria-hidden="true"></span>
-                Generating...
+                Generation...
               </>
             ) : (
               <>
-                Generate My Program
+                Generer mon programme 7 jours
                 <span className="material-symbols-outlined">arrow_forward</span>
               </>
             )}
@@ -371,14 +423,14 @@ const Calculator = () => {
           </div>
           <div className="relative z-10 pulse-grid">
             <div>
-              <h2 style={{ fontSize: '1.875rem', fontWeight: 900, marginBottom: '1.5rem' }}>Your Daily Pulse</h2>
+              <h2 style={{ fontSize: '1.875rem', fontWeight: 900, marginBottom: '1.5rem' }}>Resume du programme</h2>
               <div className="flex flex-col gap-8">
                 {/* Meal Breakdown */}
                 <div className="flex flex-col gap-4">
                   <div className="flex justify-between items-end">
                     <h5 className="font-bold flex items-center gap-2">
                       <span className="material-symbols-outlined" style={{ color: 'var(--secondary)' }}>restaurant</span>
-                      Daily Calories
+                      Calories journalieres
                     </h5>
                     <span style={{ color: 'var(--primary)', fontWeight: 700 }}>
                       {displayedProgram ? `${displayedProgram.targetCalories} kcal` : '-- kcal'}
@@ -398,15 +450,15 @@ const Calculator = () => {
                 {displayedProgram && (
                   <div className="macro-grid">
                     <div>
-                      <span>Protein</span>
+                      <span>Proteines</span>
                       <strong>{displayedProgram.macros.protein}g</strong>
                     </div>
                     <div>
-                      <span>Carbs</span>
+                      <span>Glucides</span>
                       <strong>{displayedProgram.macros.carbs}g</strong>
                     </div>
                     <div>
-                      <span>Fat</span>
+                      <span>Lipides</span>
                       <strong>{displayedProgram.macros.fat}g</strong>
                     </div>
                   </div>
@@ -417,12 +469,12 @@ const Calculator = () => {
                     <span className="material-symbols-outlined" style={{ fontSize: '1.875rem', fontVariationSettings: "'FILL' 1" }}>timer</span>
                   </div>
                   <div>
-                    <p style={{ fontSize: '0.75rem', fontWeight: 700, color: 'var(--primary)', textTransform: 'uppercase', letterSpacing: '0.1em' }}>Training Program</p>
+                    <p style={{ fontSize: '0.75rem', fontWeight: 700, color: 'var(--primary)', textTransform: 'uppercase', letterSpacing: '0.1em' }}>Programme</p>
                     <h4 style={{ fontSize: '1.25rem', fontWeight: 700 }}>
-                      {displayedProgram ? goalLabel : 'Generate to unlock'}
+                      {displayedProgram ? `${goalLabel} sur 7 jours` : 'Generez pour debloquer'}
                     </h4>
                     <p style={{ fontSize: '0.875rem', color: 'var(--on-surface-variant)' }}>
-                      {displayedProgram ? displayedProgram.trainingAdvice : 'Complete your profile and generate your personalized plan.'}
+                      {displayedProgram ? displayedProgram.trainingAdvice : 'Completez votre profil et generez votre plan personnalise.'}
                     </p>
                   </div>
                 </div>
@@ -431,7 +483,7 @@ const Calculator = () => {
             {/* Visual Data Visualization */}
             <div className="chart-container">
               <div className="flex items-center justify-between mb-8">
-                <h4 style={{ fontWeight: 900, fontSize: '1.125rem', fontStyle: 'italic' }}>Nutrition Guide</h4>
+                <h4 style={{ fontWeight: 900, fontSize: '1.125rem', fontStyle: 'italic' }}>Guide nutrition</h4>
                 <div className="flex gap-2">
                   <div style={{ width: '0.75rem', height: '0.75rem', backgroundColor: 'var(--primary)', borderRadius: '50%' }}></div>
                   <div style={{ width: '0.75rem', height: '0.75rem', backgroundColor: 'var(--secondary)', borderRadius: '50%' }}></div>
@@ -440,22 +492,22 @@ const Calculator = () => {
               <div className="nutrition-tips-card">
                 {displayedProgram ? (
                   <>
-                    <p className="nutrition-tips-title">Nutrition Tips</p>
+                    <p className="nutrition-tips-title">Conseils nutrition</p>
                     <p className="nutrition-tips-text">{displayedProgram.nutritionAdvice}</p>
                     <div className="advanced-metrics">
-                      <span><strong>{displayedProgram.hydration} ml</strong> water</span>
-                      <span><strong>{displayedProgram.steps}</strong> steps</span>
+                      <span><strong>{displayedProgram.hydration} ml</strong> eau</span>
+                      <span><strong>{displayedProgram.steps}</strong> pas</span>
                       <span><strong>{displayedProgram.cardioMinutes} min</strong> cardio</span>
                     </div>
                     <p className="nutrition-tips-meta">
-                      Last update: {new Date(displayedProgram.generatedAt).toLocaleString()}
+                      Derniere generation: {new Date(displayedProgram.generatedAt).toLocaleString()}
                     </p>
                   </>
                 ) : (
                   <>
-                    <p className="nutrition-tips-title">Nutrition Tips</p>
+                    <p className="nutrition-tips-title">Conseils nutrition</p>
                     <p className="nutrition-tips-text">
-                      Cliquez sur "Generate My Program" pour afficher vos conseils nutrition personnalises.
+                      Cliquez sur "Generer mon programme 7 jours" pour afficher vos conseils nutrition personnalises.
                     </p>
                   </>
                 )}
@@ -467,8 +519,8 @@ const Calculator = () => {
               <div className="advanced-panel">
                 <div className="advanced-panel-header">
                   <div>
-                    <p className="mini-title">Weekly Plan</p>
-                    <h3>{displayedProgram.profile.trainingDays} day training roadmap</h3>
+                    <p className="mini-title">Planning 7 jours</p>
+                    <h3>{displayedProgram.profile.trainingDays} jour(s) actifs + recuperation</h3>
                   </div>
                   <span className="material-symbols-outlined">calendar_month</span>
                 </div>
@@ -476,15 +528,25 @@ const Calculator = () => {
                   {displayedProgram.weeklyPlan.map((day) => (
                     <div className="week-card" key={`${day.day}-${day.title}`}>
                       <span>{day.day}</span>
+                      <div className="week-card-head">
+                        <span className={`week-type ${day.type === 'Entrainement' ? 'active' : ''}`}>{day.type}</span>
+                        <strong>{day.calories} kcal</strong>
+                      </div>
                       <h4>{day.title}</h4>
-                      <p>{day.duration}</p>
+                      <p>{day.duration} - {day.intensity}</p>
                       <small>{day.focus}</small>
+                      <em>{day.nutrition}</em>
+                      <div className="week-macros">
+                        <span>P {day.macros.protein}g</span>
+                        <span>G {day.macros.carbs}g</span>
+                        <span>L {day.macros.fat}g</span>
+                      </div>
                     </div>
                   ))}
                 </div>
               </div>
               <div className="advanced-panel compact">
-                <p className="mini-title">Progression Rule</p>
+                <p className="mini-title">Progression</p>
                 <h3>{experienceOptions[displayedProgram.profile.experience]}</h3>
                 <p>{displayedProgram.progression}</p>
               </div>
