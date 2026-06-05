@@ -13,8 +13,8 @@ const Navbar = () => {
   const totalCart = cartItems.reduce((acc, item) => acc + ((parseFloat(item.price) || 0) * (item.quantity || 1)), 0).toFixed(2);
 
   const handleCheckout = () => {
-    if (!user) {
-      alert('Veuillez vous connecter pour commander !');
+    if (!user || !token) {
+      alert('Veuillez vous inscrire ou vous connecter pour passer une commande.');
       setIsCartOpen(false);
       navigate('/login');
       return;

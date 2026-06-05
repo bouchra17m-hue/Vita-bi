@@ -32,6 +32,14 @@ const PaymentModal = ({ isOpen, onClose, totalAmount }) => {
     }
   }, [user]);
 
+  useEffect(() => {
+    if (isOpen && (!user || !token)) {
+      alert('Veuillez vous inscrire ou vous connecter pour passer une commande.');
+      onClose();
+      navigate('/login');
+    }
+  }, [isOpen, navigate, onClose, token, user]);
+
   if (!isOpen) return null;
 
   // Format Card Number (adds spaces every 4 digits)
@@ -96,6 +104,13 @@ const PaymentModal = ({ isOpen, onClose, totalAmount }) => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    if (!user || !token) {
+      alert('Veuillez vous inscrire ou vous connecter pour passer une commande.');
+      onClose();
+      navigate('/login');
+      return;
+    }
+
     if (!validateForm()) return;
 
     // Step 1: Show Premium Processing animation
@@ -107,7 +122,7 @@ const PaymentModal = ({ isOpen, onClose, totalAmount }) => {
         const data = await createOrder(token, {
           items: cartItems.map(item => ({
             id: item.id,
-            quantity: 1,
+            quantity: item.quantity || 1,
             price: item.price
           }))
         });

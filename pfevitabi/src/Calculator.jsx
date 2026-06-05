@@ -1,5 +1,6 @@
 import { useMemo, useState } from 'react';
 import { Link } from 'react-router-dom';
+import { useAuth } from './AuthContext';
 import './Calculator.css';
 import Footer from './Footer';
 
@@ -20,6 +21,7 @@ const experienceOptions = {
 };
 
 const Calculator = () => {
+  const { user, token } = useAuth();
   const [gender, setGender] = useState('male');
   const [goal, setGoal] = useState('muscle_gain');
   const [activity, setActivity] = useState('moderate');
@@ -195,6 +197,29 @@ const Calculator = () => {
 
   const completion = Math.round(([age, weight, height].filter(Boolean).length + 3) / 6 * 100);
   const goalLabel = goal === 'weight_loss' ? 'Weight Loss' : 'Muscle Gain';
+  const isAuthenticated = Boolean(user && token);
+
+  if (!isAuthenticated) {
+    return (
+      <div className="bg-background min-h-screen text-on-surface">
+        <main className="container" style={{ padding: '3rem 1.5rem 6rem' }}>
+          <section className="calculator-auth-gate">
+            <span className="material-symbols-outlined" aria-hidden="true">lock</span>
+            <p className="mini-title">Programme personnalise</p>
+            <h1>Connectez-vous pour utiliser le calculateur</h1>
+            <p>
+              Creez un compte ou connectez-vous pour saisir vos informations et generer votre programme VitaBi.
+            </p>
+            <div className="calculator-auth-actions">
+              <Link className="btn btn-primary" to="/register">S'inscrire</Link>
+              <Link className="btn" to="/login">Se connecter</Link>
+            </div>
+          </section>
+        </main>
+        <Footer />
+      </div>
+    );
+  }
 
   return (
     <div className="bg-background min-h-screen text-on-surface">
