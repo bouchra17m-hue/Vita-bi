@@ -128,15 +128,6 @@ export const createNutritionLog = (token, logData) => {
   });
 };
 
-export const getAdminDashboard = (token) => {
-  return apiCall('/api/admin/dashboard', {
-    headers: {
-      'Authorization': `Bearer ${token}`,
-      'Accept': 'application/json'
-    }
-  });
-};
-
 // Products endpoints
 export const getProducts = () => {
   return apiCall('/api/products');

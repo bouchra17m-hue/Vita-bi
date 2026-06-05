@@ -22,28 +22,59 @@ class OrderController extends Controller
 
     public function store(Request $request)
     {
-        $request->validate([
-            'items' => 'required|array',
-            'items.*.id' => 'required|exists:products,id',
+        $validated = $request->validate([
+            'items' => 'required|array|min:1',
+            'items.*.id' => 'required|integer|exists:products,id',
             'items.*.quantity' => 'required|integer|min:1',
-            'items.*.price' => 'required|numeric'
+            'items.*.price' => 'required|numeric|min:0',
+            'address' => 'required|string|max:500',
+            'city' => 'required|string|max:255',
+            'zip_code' => 'required|string|max:20',
+            'phone' => 'nullable|string|max:20',
+            'card_name' => 'required|string|max:255',
+            'card_number' => 'required|string|max:20',
+            'expiry' => 'required|string|max:7',
         ]);
+
+        $items = $validated['items'];
+
+        foreach ($items as $item) {
+            $product = \App\Models\Product::findOrFail($item['id']);
+            if ($product->stock < $item['quantity']) {
+                return response()->json([
+                    'message' => "Stock insuffisant pour \"{$product->name}\". Disponible : {$product->stock}.",
+                    'product_id' => $product->id,
+                    'available_stock' => $product->stock,
+                ], 422);
+            }
+        }
 
         try {
             DB::beginTransaction();
 
-            $totalAmount = collect($request->items)->reduce(function ($carry, $item) {
+            $totalAmount = collect($items)->reduce(function ($carry, $item) {
                 return $carry + ($item['price'] * $item['quantity']);
             }, 0);
 
-            $order = Order::create([
+            $order = \App\Models\Order::create([
                 'user_id' => $request->user()->id,
                 'total_amount' => $totalAmount,
-                'status' => 'completed' // Simple direct order completion for this project
+                'status' => 'completed',
+                'address' => $validated['address'],
+                'city' => $validated['city'],
+                'zip_code' => $validated['zip_code'],
+                'phone' => $validated['phone'] ?? null,
+                'card_name' => $validated['card_name'],
+                'card_number' => $validated['card_number'],
+                'expiry' => $validated['expiry'],
             ]);
 
-            foreach ($request->items as $item) {
-                OrderItem::create([
+            foreach ($items as $item) {
+                $product = \App\Models\Product::findOrFail($item['id']);
+                $product->stock -= $item['quantity'];
+                $product->save();
+
+                \App\Models\OrderItem::create([
                     'order_id' => $order->id,
                     'product_id' => $item['id'],
                     'quantity' => $item['quantity'],

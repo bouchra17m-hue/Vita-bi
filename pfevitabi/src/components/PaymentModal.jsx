@@ -22,8 +22,9 @@ const PaymentModal = ({ isOpen, onClose, totalAmount }) => {
 
   // UI/Flow states
   const [focusedField, setFocusedField] = useState('');
-  const [paymentStep, setPaymentStep] = useState('form'); // 'form', 'processing', 'success'
+  const [paymentStep, setPaymentStep] = useState('form'); // 'form', 'processing', 'success', 'failed'
   const [errors, setErrors] = useState({});
+  const [failureReason, setFailureReason] = useState('');
 
   // Auto-fill user name if logged in
   useEffect(() => {
@@ -124,23 +125,25 @@ const PaymentModal = ({ isOpen, onClose, totalAmount }) => {
             id: item.id,
             quantity: item.quantity || 1,
             price: item.price
-          }))
+          })),
+          address,
+          city,
+          zip_code: zipCode,
+          phone,
+          card_name: cardName,
+          card_number: cardNumber.replace(/\s/g, ''),
+          expiry: expiry
         });
 
-        // Step 2: Show successful payment checkmark screen
         setPaymentStep('success');
-        
-        // Clear cart state
         clearCart();
-
-        // Wait 2.5 seconds to show the success checkmark before redirecting
         setTimeout(() => {
           onClose();
           navigate('/profile');
         }, 2500);
       } catch (err) {
-        setPaymentStep('form');
-        alert(err.message || 'Erreur lors de la commande');
+        setFailureReason(err.message || 'Erreur lors du traitement du paiement');
+        setPaymentStep('failed');
       }
     }, 2000);
   };
