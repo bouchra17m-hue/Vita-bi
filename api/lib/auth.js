@@ -4,6 +4,15 @@ import { query } from './db.js';
 
 const JWT_SECRET = process.env.JWT_SECRET || 'your-super-secret-key-change-in-production';
 
+function formatUser(user) {
+  return {
+    id: user.id,
+    name: user.name,
+    email: user.email,
+    is_admin: Boolean(Number(user.is_admin || 0)),
+  };
+}
+
 export function hashPassword(password) {
   return crypto.createHash('sha256').update(password).digest('hex');
 }
@@ -38,12 +47,13 @@ export async function registerUser(name, email, password) {
     id: result.insertId,
     name,
     email,
+    is_admin: false,
     token: generateToken(result.insertId, email),
   };
 }
 
 export async function loginUser(email, password) {
-  const users = await query('SELECT id, name, email, password FROM users WHERE email = ?', [email]);
+  const users = await query('SELECT id, name, email, password, is_admin FROM users WHERE email = ?', [email]);
   
   if (users.length === 0) {
     throw new Error('Invalid credentials');
@@ -57,17 +67,15 @@ export async function loginUser(email, password) {
   }
 
   return {
-    id: user.id,
-    name: user.name,
-    email: user.email,
+    ...formatUser(user),
     token: generateToken(user.id, user.email),
   };
 }
 
 export async function getUserById(userId) {
-  const users = await query('SELECT id, name, email FROM users WHERE id = ?', [userId]);
+  const users = await query('SELECT id, name, email, is_admin FROM users WHERE id = ?', [userId]);
   if (users.length === 0) {
     return null;
   }
-  return users[0];
+  return formatUser(users[0]);
 }
