@@ -57,8 +57,8 @@ function App() {
                 <Route path="/register" element={<Register />} />
                 <Route path="/profile" element={<Profile />} />
                 <Route path="/about" element={<About />} />
-                 <Route path="/admin" element={<AdminProducts />} />
-                 <Route path="/admin/dashboard" element={<AdminDashboard />} />
+                <Route path="/admin/dashboard" element={<AdminDashboard />} />
+                <Route path="/admin" element={<AdminProducts />} />
               </Routes>
             </main>
             <AICoach />
