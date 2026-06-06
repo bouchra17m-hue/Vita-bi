@@ -47,6 +47,7 @@ export const AuthProvider = ({ children }) => {
   const logout = () => {
     localStorage.removeItem('token');
     localStorage.removeItem('user');
+    localStorage.removeItem('vitabi_cart_items');
     setToken(null);
     setUser(null);
   };

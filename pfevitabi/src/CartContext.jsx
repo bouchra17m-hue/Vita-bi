@@ -1,7 +1,9 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useContext } from 'react';
 import { CartContext } from './CartStore';
+import { useAuth } from './AuthContext';
 
 export const CartProvider = ({ children }) => {
+  const { user } = useAuth();
   const [cartItems, setCartItems] = useState(() => {
     const saved = localStorage.getItem('vitabi_cart_items');
     return saved ? JSON.parse(saved) : [];
@@ -11,6 +13,13 @@ export const CartProvider = ({ children }) => {
   useEffect(() => {
     localStorage.setItem('vitabi_cart_items', JSON.stringify(cartItems));
   }, [cartItems]);
+
+  // Clear cart when user logs out
+  useEffect(() => {
+    if (!user) {
+      setCartItems([]);
+    }
+  }, [user]);
 
   // Add product or increment quantity if already present
   const addToCart = (product) => {
