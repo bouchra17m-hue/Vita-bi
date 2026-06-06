@@ -212,30 +212,6 @@ const Home = () => {
                   <div className="premium-card__cta">Lancer →</div>
                 </div>
               </Link>
-
-              <a
-                href="#"
-                className="premium-card premium-card--ai reveal-on-scroll"
-                style={{
-                  '--accent': 'var(--primary)',
-                  '--bg': `url(${new URL('./assets/hero.png', import.meta.url).href})`,
-                }}
-                onClick={(e) => {
-                  e.preventDefault();
-                  window.dispatchEvent(new Event('vitabi:open-ai-coach'));
-                }}
-              >
-                <div className="premium-card__media" />
-                <div className="premium-card__overlay" />
-                <div className="premium-card__content">
-                  <div className="premium-card__icon">
-                    <span className="material-symbols-outlined">smart_toy</span>
-                  </div>
-                  <h3>AI Coach</h3>
-                  <p>Un coach futuriste pour construire votre programme sur-mesure.</p>
-                  <div className="premium-card__cta">Parler au coach →</div>
-                </div>
-              </a>
             </div>
           </div>
         </section>
