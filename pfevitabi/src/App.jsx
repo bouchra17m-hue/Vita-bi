@@ -16,8 +16,6 @@ import CustomCursor from './CustomCursor';
 import ScrollToTop from './ScrollToTop';
 import WaitlistModal from './WaitlistModal';
 
-import AICoach from './AICoach';
-
 function App() {
   const [isModalOpen, setIsModalOpen] = useState(false);
 
@@ -59,7 +57,6 @@ function App() {
                  <Route path="/admin" element={<AdminProducts />} />
               </Routes>
             </main>
-            <AICoach />
           </div>
         </Router>
       </CartProvider>
