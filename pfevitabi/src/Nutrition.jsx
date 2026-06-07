@@ -2,7 +2,6 @@ import { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { useAuth } from './AuthContext';
 import { getRecipes, getNutritionLogs, createNutritionLog } from './api';
-import AnimatedPageBackground from './AnimatedPageBackground';
 import './Nutrition.css';
 import Footer from './Footer';
 
@@ -266,16 +265,14 @@ const Nutrition = () => {
 
   if (loading) {
     return (
-      <div className="bg-background min-h-screen text-on-surface flex items-center justify-center animated-page">
-        <AnimatedPageBackground />
+      <div className="bg-background min-h-screen text-on-surface flex items-center justify-center">
         <p className="text-xl">Chargement des recettes...</p>
       </div>
     );
   }
 
   return (
-    <div className="bg-background min-h-screen text-on-background animated-page">
-      <AnimatedPageBackground />
+    <div className="bg-background min-h-screen text-on-background">
       <main className="container" style={{ padding: '3rem 1.5rem 6rem' }}>
         <header style={{ textAlign: 'center', marginBottom: '4rem' }}>
           <h1 style={{ fontSize: '3.5rem', fontWeight: 900, marginBottom: '1rem', letterSpacing: '-0.05em' }}>Nutrition & Recettes</h1>

@@ -4,11 +4,11 @@
   display: flex;
   align-items: center;
   overflow: hidden;
-  background: transparent;
+  background: linear-gradient(180deg, #fff 0%, #fbf7ff 100%);
 }
 
 .about-page {
-  background: transparent;
+  background: var(--surface);
 }
 
 .about-hero-content {
@@ -208,8 +208,7 @@
 }
 
 .about-section-alt {
-  background: rgba(252, 249, 255, 0.76);
-  backdrop-filter: blur(10px);
+  background: #fcf9ff;
 }
 
 .about-section-head {

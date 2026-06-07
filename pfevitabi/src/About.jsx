@@ -1,5 +1,4 @@
 import { Link } from 'react-router-dom';
-import AnimatedPageBackground from './AnimatedPageBackground';
 import './About.css';
 import Footer from './Footer';
 
@@ -12,8 +11,7 @@ const founderImageFallbacks = {
 
 const About = () => {
   return (
-    <div className="home-container about-page animated-page" style={{ color: 'var(--on-surface)' }}>
-      <AnimatedPageBackground />
+    <div className="home-container about-page" style={{ backgroundColor: 'var(--surface)', color: 'var(--on-surface)' }}>
       <main>
         <section className="about-hero">
           <div className="about-hero-glow about-hero-glow--one"></div>
