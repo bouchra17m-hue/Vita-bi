@@ -214,7 +214,7 @@
 }
 
 .about-section-alt {
-  background: linear-gradient(135deg, #faf8f5 0%, #f5eff0 50%, #f0e8ec 100%);
+  background: linear-gradient(135deg, #fef9f8 0%, #faf3f0 50%, #f6eff0 100%);
 }
 
 .about-section-head {
@@ -245,18 +245,18 @@
 }
 
 .about-card {
-  background: linear-gradient(135deg, rgba(255, 255, 255, 0.95) 0%, rgba(245, 238, 243, 0.8) 100%);
+  background: linear-gradient(135deg, rgba(255, 240, 245, 0.95) 0%, rgba(255, 228, 240, 0.85) 100%);
   border-radius: 16px;
-  border: 1px solid rgba(212, 165, 165, 0.2);
+  border: 1px solid rgba(255, 182, 193, 0.3);
   padding: 1.2rem 1.1rem;
-  box-shadow: 0 4px 15px rgba(212, 165, 165, 0.08);
+  box-shadow: 0 4px 15px rgba(255, 182, 193, 0.1);
   transition: all 0.3s ease;
 }
 
 .about-card:hover {
-  box-shadow: 0 8px 25px rgba(212, 165, 165, 0.15);
+  box-shadow: 0 8px 25px rgba(255, 182, 193, 0.18);
   transform: translateY(-2px);
-  border-color: rgba(212, 165, 165, 0.35);
+  border-color: rgba(255, 182, 193, 0.45);
 }
 
 .about-card h3 {
@@ -282,18 +282,18 @@
 }
 
 .about-step-card {
-  background: linear-gradient(135deg, rgba(255, 255, 255, 0.95) 0%, rgba(217, 196, 217, 0.15) 100%);
-  border: 1px solid rgba(217, 196, 217, 0.25);
+  background: linear-gradient(135deg, rgba(255, 240, 245, 0.95) 0%, rgba(255, 228, 240, 0.15) 100%);
+  border: 1px solid rgba(255, 182, 193, 0.35);
   border-radius: 16px;
   padding: 1.2rem 1.1rem;
-  box-shadow: 0 4px 15px rgba(217, 196, 217, 0.08);
+  box-shadow: 0 4px 15px rgba(255, 182, 193, 0.1);
   transition: all 0.3s ease;
 }
 
 .about-step-card:hover {
-  box-shadow: 0 8px 25px rgba(217, 196, 217, 0.15);
+  box-shadow: 0 8px 25px rgba(255, 182, 193, 0.18);
   transform: translateY(-2px);
-  border-color: rgba(217, 196, 217, 0.4);
+  border-color: rgba(255, 182, 193, 0.5);
 }
 
 .about-step-card span {
@@ -319,21 +319,21 @@
 }
 
 .about-founder-card {
-  background: linear-gradient(135deg, rgba(255, 255, 255, 0.95) 0%, rgba(245, 232, 227, 0.15) 100%);
-  border: 1px solid rgba(212, 165, 165, 0.2);
+  background: linear-gradient(135deg, rgba(255, 240, 245, 0.95) 0%, rgba(255, 228, 240, 0.15) 100%);
+  border: 1px solid rgba(255, 182, 193, 0.3);
   border-radius: 18px;
   padding: 1rem;
   display: flex;
   gap: 1rem;
   align-items: center;
-  box-shadow: 0 4px 15px rgba(212, 165, 165, 0.08);
+  box-shadow: 0 4px 15px rgba(255, 182, 193, 0.1);
   transition: all 0.3s ease;
 }
 
 .about-founder-card:hover {
-  box-shadow: 0 8px 25px rgba(212, 165, 165, 0.15);
+  box-shadow: 0 8px 25px rgba(255, 182, 193, 0.18);
   transform: translateY(-2px);
-  border-color: rgba(212, 165, 165, 0.35);
+  border-color: rgba(255, 182, 193, 0.45);
 }
 
 .about-founder-image {
