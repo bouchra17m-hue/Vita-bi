@@ -9,7 +9,10 @@
     }
   },
   "rewrites": [
-    { "source": "/api/(.*)", "destination": "/api/$1.js" },
+    {
+      "source": "/api/:path*",
+      "destination": "https://vitabi-backend.boushera-bai.alwaysdata.net/api/:path*"
+    },
     { "source": "/(.*)", "destination": "/index.html" }
   ]
 }
