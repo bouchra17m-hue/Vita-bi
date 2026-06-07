@@ -1,6 +1,7 @@
 import { useMemo, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { useAuth } from './AuthContext';
+import AnimatedPageBackground from './AnimatedPageBackground';
 import './Calculator.css';
 import Footer from './Footer';
 
@@ -253,7 +254,8 @@ const Calculator = () => {
 
   if (!isAuthenticated) {
     return (
-      <div className="bg-background min-h-screen text-on-surface">
+      <div className="bg-background min-h-screen text-on-surface animated-page">
+        <AnimatedPageBackground />
         <main className="container" style={{ padding: '3rem 1.5rem 6rem' }}>
           <section className="calculator-auth-gate">
             <span className="material-symbols-outlined" aria-hidden="true">lock</span>
@@ -274,7 +276,8 @@ const Calculator = () => {
   }
 
   return (
-    <div className="bg-background min-h-screen text-on-surface">
+    <div className="bg-background min-h-screen text-on-surface animated-page">
+      <AnimatedPageBackground />
       <main className="container" style={{ padding: '3rem 1.5rem 6rem' }}>
         {/* Hero Section */}
         <header className="calc-header">
