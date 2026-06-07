@@ -61,7 +61,14 @@ const Nutrition = () => {
     // Récupérer les recettes depuis le backend
     getRecipes()
       .then(data => {
-        setRecipes(data && data.length > 0 ? data : mockRecipes);
+        // Normalize recipes to ensure ingredients and steps are arrays
+        const normalizedRecipes = (data && Array.isArray(data) ? data : []).map(recipe => ({
+          ...recipe,
+          ingredients: Array.isArray(recipe.ingredients) ? recipe.ingredients : [],
+          steps: Array.isArray(recipe.steps) ? recipe.steps : []
+        }));
+        
+        setRecipes(normalizedRecipes.length > 0 ? normalizedRecipes : mockRecipes);
         setLoading(false);
       })
       .catch(err => {
@@ -210,7 +217,7 @@ const Nutrition = () => {
                   <div style={{ marginBottom: '2rem' }}>
                     <p style={{ fontSize: '0.75rem', fontWeight: 900, color: 'var(--secondary)', textTransform: 'uppercase', letterSpacing: '0.1em', marginBottom: '0.75rem' }}>Ingrédients</p>
                     <ul style={{ padding: 0, listStyle: 'none', margin: 0 }}>
-                      {recipe.ingredients.slice(0, 4).map((ing, i) => (
+                      {Array.isArray(recipe.ingredients) && recipe.ingredients.slice(0, 4).map((ing, i) => (
                         <li key={i} style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', marginBottom: '0.25rem', fontSize: '0.875rem', color: 'var(--on-surface-variant)' }}>
                           <span style={{ width: '6px', height: '6px', backgroundColor: 'var(--tertiary)', borderRadius: '50%' }}></span>
                           {ing}
@@ -240,7 +247,7 @@ const Nutrition = () => {
             <div style={{ marginBottom: '2rem' }}>
               <h4 style={{ fontWeight: 700, marginBottom: '1rem', textTransform: 'uppercase', fontSize: '0.875rem', color: 'var(--secondary)' }}>Ingrédients</h4>
               <ul style={{ listStyle: 'none', padding: 0 }}>
-                {selectedRecipe.ingredients.map((ing, i) => (
+                {Array.isArray(selectedRecipe.ingredients) && selectedRecipe.ingredients.map((ing, i) => (
                   <li key={i} style={{ display: 'flex', alignItems: 'center', gap: '0.75rem', marginBottom: '0.5rem', color: 'var(--on-surface-variant)' }}>
                     <span style={{ width: '8px', height: '8px', backgroundColor: 'var(--primary)', borderRadius: '50%' }}></span>
                     {ing}
@@ -252,7 +259,7 @@ const Nutrition = () => {
             <div style={{ marginBottom: '2.5rem' }}>
               <h4 style={{ fontWeight: 700, marginBottom: '1rem', textTransform: 'uppercase', fontSize: '0.875rem', color: 'var(--secondary)' }}>Préparation</h4>
               <ol style={{ paddingLeft: '1.5rem', color: 'var(--on-surface-variant)' }}>
-                {selectedRecipe.steps.map((step, i) => (
+                {Array.isArray(selectedRecipe.steps) && selectedRecipe.steps.map((step, i) => (
                   <li key={i} style={{ marginBottom: '1rem', lineHeight: 1.6 }}>{step}</li>
                 ))}
               </ol>
