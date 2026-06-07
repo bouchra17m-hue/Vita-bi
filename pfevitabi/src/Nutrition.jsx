@@ -58,7 +58,7 @@ const mockRecipes = [
     category: 'Petit-déjeuner',
     kcal: 320,
     protein: 20,
-    img: 'https://tse3.mm.bing.net/th/id/OIP.LxE6D1xBpPzlzBDKyJJMRAAAAA?rs=1&pid=ImgDetMain&o=7&rm=3',
+    img: 'https://images.unsplash.com/photo-1567620905732-2d1ec7ab7445?q=80&w=800&auto=format&fit=crop',
     ingredients: ['2 Œufs', 'Banane écrasée', 'Poudre de protéine', 'Miel', 'Baies fraîches'],
     steps: ['Mélanger œufs, banane et protéine.', 'Verser sur plaque chauffante.', 'Cuire 2-3 min de chaque côté.', 'Servir avec baies et miel.']
   },
@@ -68,7 +68,7 @@ const mockRecipes = [
     category: 'Petit-déjeuner',
     kcal: 280,
     protein: 15,
-    img: 'https://th.bing.com/th/id/OIP.xNhxCzPvwfl1-p30zF1x8QHaFj?w=261&h=196&c=7&r=0&o=7&pid=1.7&rm=3',
+    img: 'https://images.unsplash.com/photo-1590080876614-d1c55b6c4a00?q=80&w=800&auto=format&fit=crop',
     ingredients: ['Mangue fraîche', 'Yaourt grec', 'Lait de coco', 'Miel', 'Glaçons'],
     steps: ['Couper la mangue en morceaux.', 'Mixer avec yaourt et lait.', 'Ajouter miel et glaçons.', 'Servir immédiatement.']
   },
@@ -128,7 +128,7 @@ const mockRecipes = [
     category: 'Snacks',
     kcal: 220,
     protein: 18,
-    img: 'https://tse4.mm.bing.net/th/id/OIP.8BzdTAtOdPBY4Jkhj1fPkwHaE8?rs=1&pid=ImgDetMain&o=7&rm=3',
+    img: 'https://images.unsplash.com/photo-1585511925443-9fc26dd3a3a5?q=80&w=800&auto=format&fit=crop',
     ingredients: ['Yaourt grec', 'Muesli', 'Miel', 'Noix', 'Baies séchées'],
     steps: ['Remplir verre de yaourt.', 'Ajouter muesli.', 'Verser miel.', 'Décorer noix et baies.', 'Déguster frais.']
   },
@@ -138,7 +138,7 @@ const mockRecipes = [
     category: 'Snacks',
     kcal: 180,
     protein: 8,
-    img: 'https://tse3.mm.bing.net/th/id/OIP.ml5D1M4HKbnqHwG0rWRcoQHaJQ?rs=1&pid=ImgDetMain&o=7&rm=3',
+    img: 'https://images.unsplash.com/photo-1585707034007-9a4ff45b3281?q=80&w=800&auto=format&fit=crop',
     ingredients: ['Amandes', 'Noisettes', 'Raisins secs', 'Cranberries', 'Sel'],
     steps: ['Mélanger les fruits secs.', 'Ajouter noix.', 'Assaisonner légèrement.', 'Mettre en portion.', 'À consommer modérément.']
   },
