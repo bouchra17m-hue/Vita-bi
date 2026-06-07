@@ -68,7 +68,7 @@ const mockRecipes = [
     category: 'Déjeuner',
     kcal: 380,
     protein: '16g',
-    img: 'https://images.unsplash.com/photo-1546069901-ba9599a7e69c?q=80&w=800&auto=format&fit=crop',
+    img: 'https://images.unsplash.com/photo-1546069901-ba9599a7e63c?q=80&w=800&auto=format&fit=crop',
     ingredients: ['Quinoa cuit', 'Brocoli', 'Carotte', 'Pois chiches rôtis', 'Tahini'],
     steps: ['Cuire le quinoa.', 'Rôtir les légumes.', 'Assembler dans un bol.', 'Verser sauce tahini.', 'Décorer de graines.']
   },

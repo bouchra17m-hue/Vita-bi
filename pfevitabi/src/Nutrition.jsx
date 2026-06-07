@@ -5,6 +5,31 @@ import { getRecipes, getNutritionLogs, createNutritionLog } from './api';
 import './Nutrition.css';
 import Footer from './Footer';
 
+const buildRecipeFallbackImage = (recipe) => {
+  const title = String(recipe?.name || 'Recette').replace(/[<>&]/g, '');
+  const category = String(recipe?.category || 'Nutrition').replace(/[<>&]/g, '');
+  const svg = `
+    <svg xmlns="http://www.w3.org/2000/svg" width="900" height="600" viewBox="0 0 900 600">
+      <defs>
+        <linearGradient id="bg" x1="0" x2="1" y1="0" y2="1">
+          <stop offset="0" stop-color="#ffe9f6"/>
+          <stop offset="0.55" stop-color="#f7fff2"/>
+          <stop offset="1" stop-color="#fff4d6"/>
+        </linearGradient>
+      </defs>
+      <rect width="900" height="600" fill="url(#bg)"/>
+      <circle cx="740" cy="120" r="120" fill="#ec3c9c" opacity="0.14"/>
+      <circle cx="160" cy="500" r="150" fill="#7bbf57" opacity="0.14"/>
+      <rect x="115" y="140" width="670" height="320" rx="42" fill="#ffffff" opacity="0.82"/>
+      <text x="450" y="260" text-anchor="middle" font-family="Arial, sans-serif" font-size="34" font-weight="800" fill="#24122f">${title}</text>
+      <text x="450" y="320" text-anchor="middle" font-family="Arial, sans-serif" font-size="22" font-weight="700" fill="#ec3c9c">${category}</text>
+      <text x="450" y="375" text-anchor="middle" font-family="Arial, sans-serif" font-size="76" fill="#7bbf57">VitaBi</text>
+    </svg>
+  `;
+
+  return `data:image/svg+xml;charset=UTF-8,${encodeURIComponent(svg)}`;
+};
+
 // Mock recipes - fallback data
 const mockRecipes = [
   {
@@ -317,7 +342,15 @@ const Nutrition = () => {
                 }}
               >
                 <div style={{ width: isDinnerFull ? '50%' : '100%', height: isDinnerFull ? 'auto' : '240px', overflow: 'hidden', position: 'relative' }}>
-                  <img src={recipe.img} alt={recipe.name} style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
+                  <img
+                    src={recipe.img}
+                    alt={recipe.name}
+                    style={{ width: '100%', height: '100%', objectFit: 'cover' }}
+                    onError={(event) => {
+                      event.currentTarget.onerror = null;
+                      event.currentTarget.src = buildRecipeFallbackImage(recipe);
+                    }}
+                  />
                   <div style={{ position: 'absolute', top: '1rem', right: '1rem', backgroundColor: 'var(--primary-fixed)', color: 'var(--on-primary-fixed-variant)', padding: '0.25rem 0.75rem', borderRadius: '9999px', fontSize: '0.75rem', fontWeight: 700 }}>
                     {recipe.category}
                   </div>
