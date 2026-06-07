@@ -120,7 +120,7 @@ class RecipeSeeder extends Seeder
                 'category' => "Snacks",
                 'kcal' => 220,
                 'protein' => "18g",
-                'img' => "https://images.unsplash.com/photo-1488477181946-6428a0291840?q=80&w=800&auto=format&fit=crop",
+                'img' => "https://images.unsplash.com/photo-1585511925443-9fc26dd3a3a5?q=80&w=800&auto=format&fit=crop",
                 'ingredients' => ["Yaourt grec", "Muesli", "Miel", "Noix", "Baies séchées"],
                 'steps' => ["Remplir verre de yaourt.", "Ajouter muesli.", "Verser miel.", "Décorer noix et baies.", "Déguster frais."]
             ],
@@ -129,7 +129,7 @@ class RecipeSeeder extends Seeder
                 'category' => "Snacks",
                 'kcal' => 180,
                 'protein' => "8g",
-                'img' => "https://images.unsplash.com/photo-1585518419759-86d3b7daf397?q=80&w=800&auto=format&fit=crop",
+                'img' => "https://images.unsplash.com/photo-1585707034007-9a4ff45b3281?q=80&w=800&auto=format&fit=crop",
                 'ingredients' => ["Amandes", "Noisettes", "Raisins secs", "Cranberries", "Sel"],
                 'steps' => ["Mélanger les fruits secs.", "Ajouter noix.", "Assaisonner légèrement.", "Mettre en portion.", "À consommer modérément."]
             ],
