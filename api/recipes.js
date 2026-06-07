@@ -1,6 +1,6 @@
-import { query } from './lib/db.js';
-
 export default async function handler(req, res) {
+  const BACKEND_URL = 'https://vitabi-backend.boushera-bai.alwaysdata.net';
+  
   // CORS
   res.setHeader('Access-Control-Allow-Origin', '*');
   res.setHeader('Access-Control-Allow-Methods', 'GET, OPTIONS');
@@ -16,11 +16,28 @@ export default async function handler(req, res) {
   }
 
   try {
-    const recipes = await query('SELECT * FROM recipes LIMIT 100', []);
-    res.status(200).json(recipes);
+    // Proxy to the backend API
+    const response = await fetch(`${BACKEND_URL}/api/recipes`, {
+      method: 'GET',
+      headers: {
+        'Accept': 'application/json',
+        'Content-Type': 'application/json'
+      }
+    });
+
+    if (!response.ok) {
+      return res.status(response.status).json({ 
+        error: `Failed to fetch recipes: ${response.statusText}` 
+      });
+    }
+
+    const data = await response.json();
+    return res.status(200).json(data);
   } catch (error) {
-    console.error('Recipes error:', error);
-    // Return empty array if table doesn't exist
-    res.status(200).json([]);
+    console.error('Recipes proxy error:', error);
+    return res.status(500).json({ 
+      error: 'Failed to fetch recipes',
+      message: error.message 
+    });
   }
 }
