@@ -4,7 +4,7 @@
   display: flex;
   align-items: center;
   overflow: hidden;
-  background: linear-gradient(180deg, #fff 0%, #fbf7ff 100%);
+  background: linear-gradient(135deg, #faf6f3 0%, #f5e8e3 25%, #ede0dd 50%, #e8d5d9 75%, #f0e0e3 100%);
 }
 
 .about-page {
@@ -26,12 +26,18 @@
   border-radius: 50%;
   filter: blur(90px);
   opacity: 0.28;
+  animation: softFloat 8s ease-in-out infinite;
+}
+
+@keyframes softFloat {
+  0%, 100% { transform: translateY(0px) translateX(0px); }
+  50% { transform: translateY(20px) translateX(10px); }
 }
 
 .about-hero-glow--one {
   width: 420px;
   height: 420px;
-  background: #f08ac5;
+  background: #d4a5a5;
   top: -140px;
   right: -90px;
 }
@@ -39,7 +45,7 @@
 .about-hero-glow--two {
   width: 300px;
   height: 300px;
-  background: #b89ceb;
+  background: #d9c4d9;
   left: -80px;
   bottom: -70px;
 }
