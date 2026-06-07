@@ -1,7 +1,6 @@
 import https from 'https';
 import http from 'http';
 
-// Mock recipes data (same as in Nutrition.jsx)
 const mockRecipes = [
   {
     id: 1,
@@ -25,6 +24,56 @@ const mockRecipes = [
   },
   {
     id: 3,
+    name: 'Pancakes Protéinés',
+    category: 'Petit-déjeuner',
+    kcal: 320,
+    protein: '20g',
+    img: 'https://images.unsplash.com/photo-1587190036519-fd6c6d6bfed5?q=80&w=800&auto=format&fit=crop',
+    ingredients: ['2 Œufs', 'Banane écrasée', 'Poudre de protéine', 'Miel', 'Baies fraîches'],
+    steps: ['Mélanger œufs, banane et protéine.', 'Verser sur plaque chauffante.', 'Cuire 2-3 min de chaque côté.', 'Servir avec baies et miel.']
+  },
+  {
+    id: 4,
+    name: 'Smoothie Mangue Coco',
+    category: 'Petit-déjeuner',
+    kcal: 280,
+    protein: '15g',
+    img: 'https://images.unsplash.com/photo-1590080876614-d1c55b6c4a00?q=80&w=800&auto=format&fit=crop',
+    ingredients: ['Mangue fraîche', 'Yaourt grec', 'Lait de coco', 'Miel', 'Glaçons'],
+    steps: ['Couper la mangue en morceaux.', 'Mixer avec yaourt et lait.', 'Ajouter miel et glaçons.', 'Servir immédiatement.']
+  },
+  {
+    id: 5,
+    name: 'Toast Complet Œuf Poché',
+    category: 'Petit-déjeuner',
+    kcal: 290,
+    protein: '16g',
+    img: 'https://images.unsplash.com/photo-1528735471110-1f6e75c8f8b8?q=80&w=800&auto=format&fit=crop',
+    ingredients: ['Pain complet', 'Œuf bio', 'Tomate', 'Avocat', 'Herbes fraîches'],
+    steps: ['Griller le pain.', 'Pocher l\'œuf dans l\'eau.', 'Tartiner avocat sur le pain.', 'Ajouter tomate et œuf.', 'Assaisonner.']
+  },
+  {
+    id: 6,
+    name: 'Salade Grecque Complète',
+    category: 'Déjeuner',
+    kcal: 350,
+    protein: '14g',
+    img: 'https://images.unsplash.com/photo-1540189549336-e6e99c3679fe?w=500&h=300&fit=crop',
+    ingredients: ['Tomate', 'Concombre', 'Oignon', 'Fromage feta', 'Olives', 'Huile d\'olive'],
+    steps: ['Couper les légumes.', 'Mélanger dans un saladier.', 'Ajouter feta et olives.', 'Verser huile d\'olive.', 'Bien mélanger et servir frais.']
+  },
+  {
+    id: 7,
+    name: 'Bowl Quinoa & Légumes',
+    category: 'Déjeuner',
+    kcal: 380,
+    protein: '16g',
+    img: 'https://images.unsplash.com/photo-1546069901-ba9599a7e69c?q=80&w=800&auto=format&fit=crop',
+    ingredients: ['Quinoa cuit', 'Brocoli', 'Carotte', 'Pois chiches rôtis', 'Tahini'],
+    steps: ['Cuire le quinoa.', 'Rôtir les légumes.', 'Assembler dans un bol.', 'Verser sauce tahini.', 'Décorer de graines.']
+  },
+  {
+    id: 8,
     name: 'Pudding de Chia',
     category: 'Snacks',
     kcal: 240,
@@ -34,7 +83,37 @@ const mockRecipes = [
     steps: ['Mélanger le chia et le lait.', 'Laisser reposer une nuit.', 'Ajouter les fraises avant de servir.']
   },
   {
-    id: 4,
+    id: 9,
+    name: 'Barres Énergétiques Maison',
+    category: 'Snacks',
+    kcal: 200,
+    protein: '12g',
+    img: 'https://images.unsplash.com/photo-1638199706092-0e797eae1ce7?w=500&h=300&fit=crop',
+    ingredients: ['Flocons d\'avoine', 'Poudre protéine', 'Beurre d\'arachide', 'Miel', 'Chocolat noir'],
+    steps: ['Mélanger avoine, protéine et beurre.', 'Ajouter miel.', 'Former des barres.', 'Enrober de chocolat.', 'Réfrigérer 2h.']
+  },
+  {
+    id: 10,
+    name: 'Yaourt Grec Muesli',
+    category: 'Snacks',
+    kcal: 220,
+    protein: '18g',
+    img: 'https://images.unsplash.com/photo-1488477181946-6428a0291840?q=80&w=800&auto=format&fit=crop',
+    ingredients: ['Yaourt grec', 'Muesli', 'Miel', 'Noix', 'Baies séchées'],
+    steps: ['Remplir verre de yaourt.', 'Ajouter muesli.', 'Verser miel.', 'Décorer noix et baies.', 'Déguster frais.']
+  },
+  {
+    id: 11,
+    name: 'Mix Noix Énergétique',
+    category: 'Snacks',
+    kcal: 180,
+    protein: '8g',
+    img: 'https://images.unsplash.com/photo-1585518419759-86d3b7daf397?q=80&w=800&auto=format&fit=crop',
+    ingredients: ['Amandes', 'Noisettes', 'Raisins secs', 'Cranberries', 'Sel'],
+    steps: ['Mélanger les fruits secs.', 'Ajouter noix.', 'Assaisonner légèrement.', 'Mettre en portion.', 'À consommer modérément.']
+  },
+  {
+    id: 12,
     name: 'Saumon Grillé & Asperges',
     category: 'Dîner',
     kcal: 420,
@@ -44,7 +123,7 @@ const mockRecipes = [
     steps: ['Assaisonner le saumon.', 'Griller 4-5 min de chaque côté.', 'Saisir les asperges à la poêle.']
   },
   {
-    id: 5,
+    id: 13,
     name: 'Curry de Pois Chiches',
     category: 'Dîner',
     kcal: 380,
@@ -52,6 +131,36 @@ const mockRecipes = [
     img: 'https://images.unsplash.com/photo-1585937421612-70a008356fbe?q=80&w=800&auto=format&fit=crop',
     ingredients: ['Pois chiches', 'Lait de coco', 'Curry en poudre', 'Epinards'],
     steps: ['Faire revenir les épices.', 'Ajouter les pois chiches et le lait de coco.', 'Laisser mijoter 15 min.']
+  },
+  {
+    id: 14,
+    name: 'Poulet Rôti Légumes',
+    category: 'Dîner',
+    kcal: 450,
+    protein: '42g',
+    img: 'https://images.unsplash.com/photo-1598103442097-8b74394b95c6?q=80&w=800&auto=format&fit=crop',
+    ingredients: ['Poulet fermier', 'Patate douce', 'Brocoli', 'Ail', 'Herbes de Provence'],
+    steps: ['Préparer poulet et légumes.', 'Assaisonner généreusement.', 'Rôtir à 200°C 45 min.', 'Vérifier cuisson.', 'Servir chaud.']
+  },
+  {
+    id: 15,
+    name: 'Pâtes à la Carbonara',
+    category: 'Dîner',
+    kcal: 520,
+    protein: '28g',
+    img: 'https://images.unsplash.com/photo-1621996346565-e3dbc646d9a9?q=80&w=800&auto=format&fit=crop',
+    ingredients: ['Pâtes complètes', 'Œufs', 'Bacon', 'Fromage Parmesan', 'Poivre noir'],
+    steps: ['Cuire les pâtes.', 'Faire dorer bacon.', 'Fouetter œufs avec fromage.', 'Mélanger pâtes chaudes.', 'Ajouter bacon et sauce.', 'Assaisonner.']
+  },
+  {
+    id: 16,
+    name: 'Steak Frites Complètes',
+    category: 'Dîner',
+    kcal: 580,
+    protein: '45g',
+    img: 'https://images.unsplash.com/photo-1432139555190-58524dae6a55?q=80&w=800&auto=format&fit=crop',
+    ingredients: ['Steak bœuf', 'Pommes de terre', 'Beurre', 'Ail', 'Thym'],
+    steps: ['Cuire frites au four.', 'Poêler steak 3-4 min côté.', 'Ajouter beurre et ail.', 'Laisser reposer 5 min.', 'Servir avec frites.']
   }
 ];
 
