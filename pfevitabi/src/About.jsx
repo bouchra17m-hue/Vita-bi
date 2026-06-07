@@ -2,6 +2,13 @@ import { Link } from 'react-router-dom';
 import './About.css';
 import Footer from './Footer';
 
+const founderImageFallbacks = {
+  ihsan:
+    'https://lh3.googleusercontent.com/aida-public/AB6AXuCvTQszKznsi-lWZqhIX5uJg5NJvgolXg5TBIg3t1SeABWuMRYK5CMa34MLsLD_rX6ybuU98WxEXfqpMonIz1bYGX1z2Z__z44FxpxVgrdrwVeoeUHnobAzl2cOzWatYUcRqfZmf6eL2FkPoWscsuUh8RIZktN6SMC6Rhe4ouenqxiZ5L1-uGWejxZzg3YwYO_1YtsnNaO0CuR3IfxZax6DMdOJAsEEAxnIlBkzGHscOa03NYt_uXvYXHqsNfd_ZbFDxxIOrJYuJ9A',
+  bouchra:
+    'https://lh3.googleusercontent.com/aida-public/AB6AXuBzJr2OFQ9zPnsIumwpCJtJlN6lm4ue_0s-OfzuQ1Sx7vpgx0EvnIqKaQbY42C9ZDa5poSKR5JuD7DRd80IAF2PRyfhm_SPrz2icoCCnhImr3sNflSu5I75QbxQEZs3JHcluV50BVAcblITtpCTmni7krLaW-XrDOKeinxsy_MG_BjT4Mh-XbjcqdujYvYfKcB60gQBvgI6CRYQuFgDajObhiBQoNMbVLhh1VHVOdbuzFzufRtQhyBO-HWZNiucsBKr6HPGmx56abs',
+};
+
 const About = () => {
   return (
     <div className="home-container about-page" style={{ backgroundColor: 'var(--surface)', color: 'var(--on-surface)' }}>
@@ -183,6 +190,10 @@ const About = () => {
                   <img
                     src="/ihsan-motich.jpg"
                     alt="Ihsan Motich"
+                    onError={(event) => {
+                      event.currentTarget.onerror = null;
+                      event.currentTarget.src = founderImageFallbacks.ihsan;
+                    }}
                   />
                 </div>
                 <div>
@@ -197,6 +208,10 @@ const About = () => {
                   <img
                     src="/bouchra-baidouch.jpg"
                     alt="Bouchra Baidouch"
+                    onError={(event) => {
+                      event.currentTarget.onerror = null;
+                      event.currentTarget.src = founderImageFallbacks.bouchra;
+                    }}
                   />
                 </div>
                 <div>
