@@ -181,12 +181,12 @@ const About = () => {
               <div className="about-founder-card">
                 <div className="about-founder-image">
                   <img
-                    src="https://lh3.googleusercontent.com/aida-public/AB6AXuCvTQszKznsi-lWZqhIX5uJg5NJvgolXg5TBIg3t1SeABWuMRYK5CMa34MLsLD_rX6ybuU98WxEXfqpMonIz1bYGX1z2Z__z44FxpxVgrdrwVeoeUHnobAzl2cOzWatYUcRqfZmf6eL2FkPoWscsuUh8RIZktN6SMC6Rhe4ouenqxiZ5L1-uGWejxZzg3YwYO_1YtsnNaO0CuR3IfxZax6DMdOJAsEEAxnIlBkzGHscOa03NYt_uXvYXHqsNfd_ZbFDxxIOrJYuJ9A"
-                    alt="ihssane motich"
+                    src="/ihsan-motich.jpg"
+                    alt="Ihsan Motich"
                   />
                 </div>
                 <div>
-                  <h3>ihssane motich</h3>
+                  <h3>Ihsan Motich</h3>
                   <p className="about-founder-role">Co-fondatrice</p>
                   <p>"Ma mission est de rendre la nutrition scientifique accessible et efficace pour chaque femme."</p>
                 </div>
@@ -195,12 +195,12 @@ const About = () => {
               <div className="about-founder-card">
                 <div className="about-founder-image">
                   <img
-                    src="https://lh3.googleusercontent.com/aida-public/AB6AXuBzJr2OFQ9zPnsIumwpCJtJlN6lm4ue_0s-OfzuQ1Sx7vpgx0EvnIqKaQbY42C9ZDa5poSKR5JuD7DRd80IAF2PRyfhm_SPrz2icoCCnhImr3sNflSu5I75QbxQEZs3JHcluV50BVAcblITtpCTmni7krLaW-XrDOKeinxsy_MG_BjT4Mh-XbjcqdujYvYfKcB60gQBvgI6CRYQuFgDajObhiBQoNMbVLhh1VHVOdbuzFzufRtQhyBO-HWZNiucsBKr6HPGmx56abs"
-                    alt="bouchra"
+                    src="/bouchra-baidouch.jpg"
+                    alt="Bouchra Baidouch"
                   />
                 </div>
                 <div>
-                  <h3>bouchra</h3>
+                  <h3>Bouchra Baidouch</h3>
                   <p className="about-founder-role">Co-fondatrice</p>
                   <p>"Le mouvement revele votre force. Notre role est de vous aider a la developper, un jour a la fois."</p>
                 </div>
