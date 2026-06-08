@@ -1,6 +1,7 @@
 import { useCallback, useState, useEffect, useMemo } from 'react';
 import { Link } from 'react-router-dom';
 import { useCart } from './useCart';
+import { useToast } from './useToast';
 import { getProducts } from './api';
 import Footer from './Footer';
 import './Shop.css';
@@ -46,6 +47,7 @@ const fallbackProducts = [
 
 const Shop = () => {
   const { addToCart } = useCart();
+  const toast = useToast();
   const [selectedCategory, setSelectedCategory] = useState('all');
   const [selectedProduct, setSelectedProduct] = useState(null);
   const [searchTerm, setSearchTerm] = useState('');
@@ -256,7 +258,7 @@ const Shop = () => {
                     {product.badge}
                   </div>
                 )}
-                <button className="btn" style={{ position: 'absolute', top: '1rem', right: '1rem', width: '2.5rem', height: '2.5rem', borderRadius: '50%', backgroundColor: 'rgba(255,255,255,0.8)', display: 'flex', alignItems: 'center', justifyContent: 'center', color: 'var(--primary)' }} onClick={(e) => { e.stopPropagation(); alert('Ajouté aux favoris !'); }}>
+                <button className="btn" style={{ position: 'absolute', top: '1rem', right: '1rem', width: '2.5rem', height: '2.5rem', borderRadius: '50%', backgroundColor: 'rgba(255,255,255,0.8)', display: 'flex', alignItems: 'center', justifyContent: 'center', color: 'var(--primary)' }} onClick={(e) => { e.stopPropagation(); toast.success('Ajouté aux favoris !'); }}>
                   <span className="material-symbols-outlined">favorite</span>
                 </button>
               </div>
@@ -342,7 +344,7 @@ const Shop = () => {
                 -20% sur votre première commande d'équipements avec le code <span style={{ backgroundColor: 'white', color: 'var(--secondary)', fontWeight: 700, padding: '0.25rem 0.75rem', borderRadius: '8px', marginLeft: '0.5rem' }}>VITA20</span>
               </p>
               <div className="flex gap-4">
-                <button className="btn" style={{ backgroundColor: 'white', color: 'var(--secondary)', padding: '1rem 2rem', borderRadius: '9999px', fontWeight: 700 }} onClick={() => alert('Code VITA20 appliqué !')}>En profiter</button>
+                <button className="btn" style={{ backgroundColor: 'white', color: 'var(--secondary)', padding: '1rem 2rem', borderRadius: '9999px', fontWeight: 700 }} onClick={() => toast.success('Code VITA20 appliqué !')}>En profiter</button>
                 <Link to="/about" className="btn" style={{ border: '1px solid rgba(255,255,255,0.4)', color: 'white', padding: '1rem 2rem', borderRadius: '9999px', fontWeight: 700, textDecoration: 'none' }}>En savoir plus</Link>
               </div>
             </div>
@@ -356,7 +358,7 @@ const Shop = () => {
       <Footer />
 
       {/* FAB */}
-      <button className="btn btn-primary" style={{ position: 'fixed', bottom: '2rem', right: '2rem', width: '4rem', height: '4rem', borderRadius: '50%', boxShadow: '0 8px 32px rgba(224,64,160,0.4)', display: 'flex', alignItems: 'center', justifyContent: 'center', zIndex: 40 }} onClick={() => alert('Chat de support bientôt disponible !')}>
+      <button className="btn btn-primary" style={{ position: 'fixed', bottom: '2rem', right: '2rem', width: '4rem', height: '4rem', borderRadius: '50%', boxShadow: '0 8px 32px rgba(224,64,160,0.4)', display: 'flex', alignItems: 'center', justifyContent: 'center', zIndex: 40 }} onClick={() => toast.info('Chat de support bientôt disponible !')}>
         <span className="material-symbols-outlined" style={{ fontSize: '2rem' }}>chat</span>
       </button>
     </div>

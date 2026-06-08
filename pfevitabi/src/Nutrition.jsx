@@ -1,6 +1,7 @@
 ﻿import { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { useAuth } from './AuthContext';
+import { useToast } from './useToast';
 import { getRecipes, getNutritionLogs, createNutritionLog } from './api';
 import './Nutrition.css';
 import Footer from './Footer';
@@ -200,6 +201,7 @@ const Nutrition = () => {
   const [logs, setLogs] = useState([]);
   const [loading, setLoading] = useState(true);
   const { user, token } = useAuth();
+  const toast = useToast();
 
   useEffect(() => {
     // Récupérer les recettes depuis le backend
@@ -235,7 +237,7 @@ const Nutrition = () => {
 
   const handleLogMeal = async (recipe) => {
     if (!token) {
-      alert("Veuillez vous connecter pour enregistrer vos repas !");
+      toast.warning("Veuillez vous connecter pour enregistrer vos repas !");
       return;
     }
 
@@ -247,12 +249,12 @@ const Nutrition = () => {
         protein: recipe.protein
       });
 
-      alert(`${recipe.name} ajouté à votre journée !`);
+      toast.success(`${recipe.name} ajouté à votre journée !`);
       setLogs(prev => [data.log, ...prev]);
       setSelectedRecipe(null);
     } catch (err) {
       console.error("Erreur lors de l'enregistrement:", err);
-      alert("Erreur lors de l'enregistrement");
+      toast.error("Erreur lors de l'enregistrement");
     }
   };
 
