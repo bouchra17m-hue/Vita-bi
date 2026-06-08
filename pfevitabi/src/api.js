@@ -1,20 +1,11 @@
-// API Configuration
-// For production on Vercel: use relative paths (same origin)
-// For development: use localhost:8000 or custom backend
 const API_URL = (() => {
   const envUrl = import.meta.env.VITE_API_URL;
-  
-  // If VITE_API_URL is explicitly set, use it
   if (envUrl && envUrl.trim()) {
     return envUrl.replace(/\/$/, '');
   }
-  
-  // In production (Vercel), use relative paths
   if (import.meta.env.PROD) {
     return '';
   }
-  
-  // In development, use localhost
   return 'http://127.0.0.1:8000';
 })();
 
@@ -26,41 +17,46 @@ export const apiCall = async (endpoint, options = {}) => {
   const url = `${API_URL}${endpoint}`;
   const headers = {
     'Accept': 'application/json',
-    ...(options.headers || {})
+    ...(options.headers || {}),
   };
-  let response;
 
+  let response;
   try {
     response = await fetch(url, { ...options, headers });
   } catch (error) {
-    const isDev = !IS_PRODUCTION;
-    const displayUrl = API_URL || 'Vercel API';
-    const errorMsg = isDev 
-      ? `Impossible de joindre le backend (${displayUrl}).\n\nDéveloppement: Vérifiez que "php artisan serve" est lancé sur port 8000.\n\nErreur: ${error.message}`
-      : `Impossible de joindre le serveur API.\n\nVérifiez votre connexion internet.\n\nErreur: ${error.message}`;
-    throw new Error(errorMsg);
+    const displayUrl = API_URL || 'API serveur';
+    throw new Error(
+      `Impossible de joindre le serveur (${displayUrl}). ` +
+      `Vérifiez votre connexion. ` +
+      `Détail: ${error.message}`
+    );
   }
 
   if (!response.ok) {
-    let message = `API Error: ${response.status} ${response.statusText}`;
-
+    let message = `Erreur API: ${response.status} ${response.statusText}`;
     try {
       const data = await response.json();
-      if (data.errors) {
-        message = Object.values(data.errors).flat().join(' ');
-      } else {
-        message = data.message || message;
+      if (typeof data === 'object' && data !== null) {
+        if (data.message && typeof data.message === 'string') {
+          message = data.message;
+        } else if (data.errors) {
+          const parts = [];
+          for (const key of Object.keys(data.errors)) {
+            const val = data.errors[key];
+            parts.push(`${key}: ${Array.isArray(val) ? val.join(' ') : val}`);
+          }
+          message = parts.join(' | ');
+        }
       }
     } catch {
-      // Keep the HTTP status message when the API does not return JSON.
+      // response is not JSON, keep status message
     }
-
     throw new Error(message);
   }
+
   return response.json();
 };
 
-// Health check endpoint
 export const checkBackendHealth = async () => {
   try {
     const response = await fetch(`${API_URL}/api/test`);
@@ -70,13 +66,12 @@ export const checkBackendHealth = async () => {
   }
 };
 
-// Auth endpoints
 export const getUser = (token) => {
   return apiCall('/api/user', {
     headers: {
-      'Authorization': `Bearer ${token}`,
-      'Accept': 'application/json'
-    }
+      Authorization: `Bearer ${token}`,
+      Accept: 'application/json',
+    },
   });
 };
 
@@ -85,9 +80,9 @@ export const login = (email, password) => {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',
-      'Accept': 'application/json'
+      Accept: 'application/json',
     },
-    body: JSON.stringify({ email, password })
+    body: JSON.stringify({ email, password }),
   });
 };
 
@@ -96,23 +91,25 @@ export const register = (name, email, password, passwordConfirmation) => {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',
-      'Accept': 'application/json'
+      Accept: 'application/json',
     },
-    body: JSON.stringify({ name, email, password, password_confirmation: passwordConfirmation })
+    body: JSON.stringify({
+      name,
+      email,
+      password,
+      password_confirmation: passwordConfirmation,
+    }),
   });
 };
 
-// Recipes endpoints
-export const getRecipes = () => {
-  return apiCall('/api/recipes');
-};
+export const getRecipes = () => apiCall('/api/recipes');
 
 export const getNutritionLogs = (token) => {
   return apiCall('/api/nutrition-logs', {
     headers: {
-      'Authorization': `Bearer ${token}`,
-      'Accept': 'application/json'
-    }
+      Authorization: `Bearer ${token}`,
+      Accept: 'application/json',
+    },
   });
 };
 
@@ -121,27 +118,24 @@ export const createNutritionLog = (token, logData) => {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',
-      'Accept': 'application/json',
-      'Authorization': `Bearer ${token}`
+      Accept: 'application/json',
+      Authorization: `Bearer ${token}`,
     },
-    body: JSON.stringify(logData)
+    body: JSON.stringify(logData),
   });
 };
 
-// Products endpoints
-export const getProducts = () => {
-  return apiCall('/api/products');
-};
+export const getProducts = () => apiCall('/api/products');
 
 export const createProduct = (token, productData) => {
   return apiCall('/api/products', {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',
-      'Accept': 'application/json',
-      'Authorization': `Bearer ${token}`
+      Accept: 'application/json',
+      Authorization: `Bearer ${token}`,
     },
-    body: JSON.stringify(productData)
+    body: JSON.stringify(productData),
   });
 };
 
@@ -150,10 +144,10 @@ export const updateProduct = (token, productId, productData) => {
     method: 'PUT',
     headers: {
       'Content-Type': 'application/json',
-      'Accept': 'application/json',
-      'Authorization': `Bearer ${token}`
+      Accept: 'application/json',
+      Authorization: `Bearer ${token}`,
     },
-    body: JSON.stringify(productData)
+    body: JSON.stringify(productData),
   });
 };
 
@@ -161,19 +155,18 @@ export const deleteProduct = (token, productId) => {
   return apiCall(`/api/products/${productId}`, {
     method: 'DELETE',
     headers: {
-      'Accept': 'application/json',
-      'Authorization': `Bearer ${token}`
-    }
+      Accept: 'application/json',
+      Authorization: `Bearer ${token}`,
+    },
   });
 };
 
-// Orders endpoints
 export const getOrders = (token) => {
   return apiCall('/api/orders', {
     headers: {
-      'Authorization': `Bearer ${token}`,
-      'Accept': 'application/json'
-    }
+      Authorization: `Bearer ${token}`,
+      Accept: 'application/json',
+    },
   });
 };
 
@@ -182,10 +175,9 @@ export const createOrder = (token, orderData) => {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',
-      'Accept': 'application/json',
-      'Authorization': `Bearer ${token}`
+      Accept: 'application/json',
+      Authorization: `Bearer ${token}`,
     },
-    body: JSON.stringify(orderData)
+    body: JSON.stringify(orderData),
   });
 };
-

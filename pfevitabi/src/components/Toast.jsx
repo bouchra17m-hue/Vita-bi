@@ -28,7 +28,7 @@ export const ToastProvider = ({ children }) => {
     setToasts(prev => prev.filter(t => t.id !== id));
   }, []);
 
-  const showSuccess = useCallback((message, title = 'Succès') => {
+  const showSuccess = useCallback((message, title = 'Succï¿½s') => {
     addToast('success', message, title);
   }, [addToast]);
 
@@ -68,7 +68,7 @@ const ToastItem = ({ toast, onClose }) => {
   };
 
   return (
-    <div className={	oast }>
+    <div className="toast">
       <span className="material-symbols-outlined toast-icon">{getIcon()}</span>
       <div className="toast-content">
         <div className="toast-title">{toast.title}</div>

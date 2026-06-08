@@ -83,7 +83,7 @@ const Home = () => {
                 marginBottom: '1.5rem',
                 textTransform: 'uppercase'
               }}>
-                Performance Élite
+                Performance ï¿½lite
               </div>
               <h1 style={{ 
                 fontSize: 'clamp(3rem, 8vw, 5.5rem)', 
@@ -93,7 +93,7 @@ const Home = () => {
                 marginBottom: '1.5rem',
                 color: 'var(--surface)'
               }}>
-                Dépassez <br/>
+                Dï¿½passez <br/>
                 <span style={{ 
                   color: 'var(--primary)', 
                   fontStyle: 'italic'
@@ -108,7 +108,7 @@ const Home = () => {
                 fontWeight: 500,
                 opacity: 0.9
               }}>
-                L'alliance parfaite entre science nutritionnelle, équipement de pointe et technologie intelligente.
+                L'alliance parfaite entre science nutritionnelle, ï¿½quipement de pointe et technologie intelligente.
               </p>
               <div className="flex gap-4">
                 <Link to="/shop" className="btn btn-primary" style={{ padding: '1.125rem 3rem', fontSize: '1rem' }}>DECOUVRIR LE SHOP</Link>
@@ -146,10 +146,10 @@ const Home = () => {
           <div className="container">
             <div className="ecosystem-header reveal-on-scroll">
               <h2 className="ecosystem-title">
-                L'ÉCOSYSTÈME <span>VITABI</span>
+                L'ï¿½COSYSTï¿½ME <span>VITABI</span>
               </h2>
               <p className="ecosystem-subtitle">
-                Un écosystème complet pour performer: équipement, nutrition, analyse et coaching.
+                Un ï¿½cosystï¿½me complet pour performer: ï¿½quipement, nutrition, analyse et coaching.
               </p>
             </div>
 
@@ -170,8 +170,8 @@ const Home = () => {
                     <span className="material-symbols-outlined">shopping_bag</span>
                   </div>
                   <h3>Shop</h3>
-                  <p>Équipement premium et accessoires de performance.</p>
-                  <div className="premium-card__cta">Découvrir ?</div>
+                  <p>ï¿½quipement premium et accessoires de performance.</p>
+                  <div className="premium-card__cta">Dï¿½couvrir ?</div>
                 </div>
               </Link>
 
@@ -211,7 +211,7 @@ const Home = () => {
                     <span className="material-symbols-outlined">calculate</span>
                   </div>
                   <h3>Calculateur</h3>
-                  <p>Macros, calories et suivi: précis, simple, efficace.</p>
+                  <p>Macros, calories et suivi: prï¿½cis, simple, efficace.</p>
                   <div className="premium-card__cta">Lancer ?</div>
                 </div>
               </Link>
@@ -224,8 +224,8 @@ const Home = () => {
           <div className="container">
             <div className="cta-glass reveal-on-scroll">
               <div className="cta-copy">
-                <h3>Rejoignez la révolution fitness.</h3>
-                <p>Débloquez une expérience premium: routines, nutrition et coaching.</p>
+                <h3>Rejoignez la rï¿½volution fitness.</h3>
+                <p>Dï¿½bloquez une expï¿½rience premium: routines, nutrition et coaching.</p>
               </div>
               <div className="cta-metrics">
                 <div className="cta-metric">
@@ -234,7 +234,7 @@ const Home = () => {
                 </div>
                 <div className="cta-metric">
                   <div className="cta-metric__value">1M+</div>
-                  <div className="cta-metric__label">Calories brûlées</div>
+                  <div className="cta-metric__label">Calories brï¿½lï¿½es</div>
                 </div>
               </div>
               <Link to="/login" className="btn btn-primary cta-btn">
@@ -249,7 +249,7 @@ const Home = () => {
         <section className="newsletter newsletter-premium">
           <div className="newsletter-box newsletter-box--center reveal-on-scroll" style={{ background: 'var(--on-surface)' }}>
             <div className="newsletter-copy">
-              <h2>Prêt à briller ?</h2>
+              <h2>Prï¿½t ï¿½ briller ?</h2>
               <p>Inscrivez-vous pour nos offres flash.</p>
             </div>
             <form
