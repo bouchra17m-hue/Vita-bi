@@ -1,9 +1,8 @@
-import { useState, useEffect } from 'react';
+﻿import { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { useAuth } from './AuthContext';
 import { getRecipes, getNutritionLogs, createNutritionLog } from './api';
 import './Nutrition.css';
-import { useToast } from './components/Toast';
 import Footer from './Footer';
 
 const buildRecipeFallbackImage = (recipe) => {
@@ -36,71 +35,72 @@ const mockRecipes = [
   {
     id: 1,
     name: 'Berry Vitality Bowl',
-    category: 'Petit-d�jeuner',
+    category: 'Petit-d├®jeuner',
     kcal: 340,
     protein: 12,
     img: 'https://lh3.googleusercontent.com/aida-public/AB6AXuBJe5nqMFHc9Y1pk1THZZ-wzxDN3QEyp7fIRB9d0jwkqS0s1EYXh5Zbj7pSmLLvkwrLjXXkMDxs_EH5Hiprhjz_a39RX6oR8SpRhCkt1FuWi6HvO_YMgXmVg_AUNlNJQHlC8_osSOlwO5XspvesTS3IblcnDwPsWN7kX82NAPWcYwasYR6ttSgPMZZ118oiDQB439ouu5XL2RWFhNJqWbl82d4S5k3C74qDSFLDY7xeKzmq4-EeCehkYZQP5aaB85ntVGUX-J0DOv4',
     ingredients: ['Baies sauvages', 'Yogourt grec 0%', 'Graines de chia', 'Miel d\'acacia'],
-    steps: ['M�langer le yogourt et les graines.', 'Ajouter les baies fra�ches.', 'Napper de miel.']
+    steps: ['M├®langer le yogourt et les graines.', 'Ajouter les baies fra├«ches.', 'Napper de miel.']
   },
   {
     id: 2,
-    name: 'Omelette Avocat & �pinards',
-    category: 'Petit-d�jeuner',
+    name: 'Omelette Avocat & ├ëpinards',
+    category: 'Petit-d├®jeuner',
     kcal: 280,
     protein: 18,
     img: 'https://static.jow.fr/550x550/patterns/yolk-03-202309.png_merge_recipes/75RKiy61gQ0dYA.png.jpg',
-    ingredients: ['3 Oeufs bio', '�pinards frais', '1/2 Avocat', 'Feta l�g�re'],
-    steps: ['Faire sauter les �pinards.', 'Battre les oeufs et verser dans la po�le.', 'Ajouter l\'avocat et la feta � la fin.']
+    ingredients: ['3 Oeufs bio', '├ëpinards frais', '1/2 Avocat', 'Feta l├®g├¿re'],
+    steps: ['Faire sauter les ├®pinards.', 'Battre les oeufs et verser dans la po├¬le.', 'Ajouter l\'avocat et la feta ├á la fin.']
   },
   {
     id: 3,
-    name: 'Pancakes Prot�in�s',
-    category: 'Petit-d�jeuner',
+    name: 'Pancakes Prot├®in├®s',
+    category: 'Petit-d├®jeuner',
     kcal: 320,
     protein: 20,
-    img: 'https://images.unsplash.com/photo-1567620905732-2d1ec7ab7445?q=80&w=800&auto=format&fit=crop',
-    ingredients: ['2 �ufs', 'Banane �cras�e', 'Poudre de prot�ine', 'Miel', 'Baies fra�ches'],
-    steps: ['M�langer �ufs, banane et prot�ine.', 'Verser sur plaque chauffante.', 'Cuire 2-3 min de chaque c�t�.', 'Servir avec baies et miel.']
+    img: 'https://images.unsplash.com/photo-1587190036519-fd6c6d6bfed5?q=80&w=800&auto=format&fit=crop',
+    ingredients: ['2 ┼Æufs', 'Banane ├®cras├®e', 'Poudre de prot├®ine', 'Miel', 'Baies fra├«ches'],
+    steps: ['M├®langer ┼ôufs, banane et prot├®ine.', 'Verser sur plaque chauffante.', 'Cuire 2-3 min de chaque c├┤t├®.', 'Servir avec baies et miel.']
   },
   {
     id: 4,
     name: 'Smoothie Mangue Coco',
-    category: 'Petit-d�jeuner',
+    category: 'Petit-d├®jeuner',
     kcal: 280,
     protein: 15,
     img: 'https://images.unsplash.com/photo-1590080876614-d1c55b6c4a00?q=80&w=800&auto=format&fit=crop',
-    ingredients: ['Mangue fra�che', 'Yaourt grec', 'Lait de coco', 'Miel', 'Gla�ons'],
-    steps: ['Couper la mangue en morceaux.', 'Mixer avec yaourt et lait.', 'Ajouter miel et gla�ons.', 'Servir imm�diatement.']
+    ingredients: ['Mangue fra├«che', 'Yaourt grec', 'Lait de coco', 'Miel', 'Gla├ºons'],
+    steps: ['Couper la mangue en morceaux.', 'Mixer avec yaourt et lait.', 'Ajouter miel et gla├ºons.', 'Servir imm├®diatement.']
   },
   {
     id: 5,
-    name: 'Toast Complet �uf Poch�',
-    category: 'Petit-d�jeuner',
+    name: 'Toast Complet ┼Æuf Poch├®',
+    category: 'Petit-d├®jeuner',
     kcal: 290,
+    protein: 16,
     img: 'https://images.unsplash.com/photo-1528735471110-1f6e75c8f8b8?q=80&w=800&auto=format&fit=crop',
-    ingredients: ['Pain complet', '�uf bio', 'Tomate', 'Avocat', 'Herbes fra�ches'],
-    steps: ['Griller le pain.', 'Pocher l\'�uf dans l\'eau.', 'Tartiner avocat sur le pain.', 'Ajouter tomate et �uf.', 'Assaisonner.']
+    ingredients: ['Pain complet', '┼Æuf bio', 'Tomate', 'Avocat', 'Herbes fra├«ches'],
+    steps: ['Griller le pain.', 'Pocher l\'┼ôuf dans l\'eau.', 'Tartiner avocat sur le pain.', 'Ajouter tomate et ┼ôuf.', 'Assaisonner.']
   },
   {
     id: 6,
-    name: 'Salade Grecque Compl�te',
-    category: 'D�jeuner',
+    name: 'Salade Grecque Compl├¿te',
+    category: 'D├®jeuner',
     kcal: 350,
     protein: 14,
     img: 'https://images.unsplash.com/photo-1540189549336-e6e99c3679fe?w=500&h=300&fit=crop',
     ingredients: ['Tomate', 'Concombre', 'Oignon', 'Fromage feta', 'Olives', 'Huile d\'olive'],
-    steps: ['Couper les l�gumes.', 'M�langer dans un saladier.', 'Ajouter feta et olives.', 'Verser huile d\'olive.', 'Bien m�langer et servir frais.']
+    steps: ['Couper les l├®gumes.', 'M├®langer dans un saladier.', 'Ajouter feta et olives.', 'Verser huile d\'olive.', 'Bien m├®langer et servir frais.']
   },
   {
     id: 7,
-    name: 'Bowl Quinoa & L�gumes',
-    category: 'D�jeuner',
+    name: 'Bowl Quinoa & L├®gumes',
+    category: 'D├®jeuner',
     kcal: 380,
     protein: 16,
     img: 'https://images.unsplash.com/photo-1546069901-ba9599a7e63c?q=80&w=800&auto=format&fit=crop',
-    ingredients: ['Quinoa cuit', 'Brocoli', 'Carotte', 'Pois chiches r�tis', 'Tahini'],
-    steps: ['Cuire le quinoa.', 'R�tir les l�gumes.', 'Assembler dans un bol.', 'Verser sauce tahini.', 'D�corer de graines.']
+    ingredients: ['Quinoa cuit', 'Brocoli', 'Carotte', 'Pois chiches r├┤tis', 'Tahini'],
+    steps: ['Cuire le quinoa.', 'R├┤tir les l├®gumes.', 'Assembler dans un bol.', 'Verser sauce tahini.', 'D├®corer de graines.']
   },
   {
     id: 8,
@@ -110,17 +110,17 @@ const mockRecipes = [
     protein: 8,
     img: 'https://www.delscookingtwist.com/wp-content/uploads/2019/05/Rhubarb-Strawberry-Chia-Pudding_1.jpg',
     ingredients: ['Graines de chia', 'Lait d\'amande', 'Vanille', 'Fraises'],
-    steps: ['M�langer le chia et le lait.', 'Laisser reposer une nuit.', 'Ajouter les fraises avant de servir.']
+    steps: ['M├®langer le chia et le lait.', 'Laisser reposer une nuit.', 'Ajouter les fraises avant de servir.']
   },
   {
     id: 9,
-    name: 'Barres �nerg�tiques Maison',
+    name: 'Barres ├ënerg├®tiques Maison',
     category: 'Snacks',
     kcal: 200,
     protein: 12,
-    img: 'https://images.unsplash.com/photo-1638199706092-0e797eae1ce7?q=80&w=800&auto=format&fit=crop',
-    ingredients: ['Flocons d\'avoine', 'Poudre prot�ine', 'Beurre d\'arachide', 'Miel', 'Chocolat noir'],
-    steps: ['M�langer avoine, prot�ine et beurre.', 'Ajouter miel.', 'Former des barres.', 'Enrober de chocolat.', 'R�frig�rer 2h.']
+    img: 'https://images.unsplash.com/photo-1638199706092-0e797eae1ce7?w=500&h=300&fit=crop',
+    ingredients: ['Flocons d\'avoine', 'Poudre prot├®ine', 'Beurre d\'arachide', 'Miel', 'Chocolat noir'],
+    steps: ['M├®langer avoine, prot├®ine et beurre.', 'Ajouter miel.', 'Former des barres.', 'Enrober de chocolat.', 'R├®frig├®rer 2h.']
   },
   {
     id: 10,
@@ -129,68 +129,68 @@ const mockRecipes = [
     kcal: 220,
     protein: 18,
     img: 'https://images.unsplash.com/photo-1585511925443-9fc26dd3a3a5?q=80&w=800&auto=format&fit=crop',
-    ingredients: ['Yaourt grec', 'Muesli', 'Miel', 'Noix', 'Baies s�ch�es'],
-    steps: ['Remplir verre de yaourt.', 'Ajouter muesli.', 'Verser miel.', 'D�corer noix et baies.', 'D�guster frais.']
+    ingredients: ['Yaourt grec', 'Muesli', 'Miel', 'Noix', 'Baies s├®ch├®es'],
+    steps: ['Remplir verre de yaourt.', 'Ajouter muesli.', 'Verser miel.', 'D├®corer noix et baies.', 'D├®guster frais.']
   },
   {
     id: 11,
-    name: 'Mix Noix �nerg�tique',
+    name: 'Mix Noix ├ënerg├®tique',
     category: 'Snacks',
     kcal: 180,
     protein: 8,
     img: 'https://images.unsplash.com/photo-1585707034007-9a4ff45b3281?q=80&w=800&auto=format&fit=crop',
     ingredients: ['Amandes', 'Noisettes', 'Raisins secs', 'Cranberries', 'Sel'],
-    steps: ['M�langer les fruits secs.', 'Ajouter noix.', 'Assaisonner l�g�rement.', 'Mettre en portion.', '� consommer mod�r�ment.']
+    steps: ['M├®langer les fruits secs.', 'Ajouter noix.', 'Assaisonner l├®g├¿rement.', 'Mettre en portion.', '├Ç consommer mod├®r├®ment.']
   },
   {
     id: 12,
-    name: 'Saumon Grill� & Asperges',
-    category: 'D�ner',
+    name: 'Saumon Grill├® & Asperges',
+    category: 'D├«ner',
     kcal: 420,
     protein: 35,
     img: 'https://images.unsplash.com/photo-1467003909585-2f8a72700288?q=80&w=800&auto=format&fit=crop',
-    ingredients: ['Pav� de saumon', 'Asperges vertes', 'Huile d\'olive', 'Citron bio'],
-    steps: ['Assaisonner le saumon.', 'Griller 4-5 min de chaque c�t�.', 'Saisir les asperges � la po�le.']
+    ingredients: ['Pav├® de saumon', 'Asperges vertes', 'Huile d\'olive', 'Citron bio'],
+    steps: ['Assaisonner le saumon.', 'Griller 4-5 min de chaque c├┤t├®.', 'Saisir les asperges ├á la po├¬le.']
   },
   {
     id: 13,
     name: 'Curry de Pois Chiches',
-    category: 'D�ner',
+    category: 'D├«ner',
     kcal: 380,
     protein: 14,
     img: 'https://images.unsplash.com/photo-1585937421612-70a008356fbe?q=80&w=800&auto=format&fit=crop',
     ingredients: ['Pois chiches', 'Lait de coco', 'Curry en poudre', 'Epinards'],
-    steps: ['Faire revenir les �pices.', 'Ajouter les pois chiches et le lait de coco.', 'Laisser mijoter 15 min.']
+    steps: ['Faire revenir les ├®pices.', 'Ajouter les pois chiches et le lait de coco.', 'Laisser mijoter 15 min.']
   },
   {
     id: 14,
-    name: 'Poulet R�ti L�gumes',
-    category: 'D�ner',
+    name: 'Poulet R├┤ti L├®gumes',
+    category: 'D├«ner',
     kcal: 450,
     protein: 42,
     img: 'https://images.unsplash.com/photo-1598103442097-8b74394b95c6?q=80&w=800&auto=format&fit=crop',
     ingredients: ['Poulet fermier', 'Patate douce', 'Brocoli', 'Ail', 'Herbes de Provence'],
-    steps: ['Pr�parer poulet et l�gumes.', 'Assaisonner g�n�reusement.', 'R�tir � 200�C 45 min.', 'V�rifier cuisson.', 'Servir chaud.']
+    steps: ['Pr├®parer poulet et l├®gumes.', 'Assaisonner g├®n├®reusement.', 'R├┤tir ├á 200┬░C 45 min.', 'V├®rifier cuisson.', 'Servir chaud.']
   },
   {
     id: 15,
-    name: 'P�tes � la Carbonara',
-    category: 'D�ner',
+    name: 'P├ótes ├á la Carbonara',
+    category: 'D├«ner',
     kcal: 520,
     protein: 28,
     img: 'https://images.unsplash.com/photo-1621996346565-e3dbc646d9a9?q=80&w=800&auto=format&fit=crop',
-    ingredients: ['P�tes compl�tes', '�ufs', 'Bacon', 'Fromage Parmesan', 'Poivre noir'],
-    steps: ['Cuire les p�tes.', 'Faire dorer bacon.', 'Fouetter �ufs avec fromage.', 'M�langer p�tes chaudes.', 'Ajouter bacon et sauce.', 'Assaisonner.']
+    ingredients: ['P├ótes compl├¿tes', '┼Æufs', 'Bacon', 'Fromage Parmesan', 'Poivre noir'],
+    steps: ['Cuire les p├ótes.', 'Faire dorer bacon.', 'Fouetter ┼ôufs avec fromage.', 'M├®langer p├ótes chaudes.', 'Ajouter bacon et sauce.', 'Assaisonner.']
   },
   {
     id: 16,
-    name: 'Steak Frites Compl�tes',
-    category: 'D�ner',
+    name: 'Steak Frites Compl├¿tes',
+    category: 'D├«ner',
     kcal: 580,
     protein: 45,
     img: 'https://images.unsplash.com/photo-1432139555190-58524dae6a55?q=80&w=800&auto=format&fit=crop',
-    ingredients: ['Steak b�uf', 'Pommes de terre', 'Beurre', 'Ail', 'Thym'],
-    steps: ['Cuire frites au four.', 'Po�ler steak 3-4 min c�t�.', 'Ajouter beurre et ail.', 'Laisser reposer 5 min.', 'Servir avec frites.']
+    ingredients: ['Steak b┼ôuf', 'Pommes de terre', 'Beurre', 'Ail', 'Thym'],
+    steps: ['Cuire frites au four.', 'Po├¬ler steak 3-4 min c├┤t├®.', 'Ajouter beurre et ail.', 'Laisser reposer 5 min.', 'Servir avec frites.']
   },
 ];
 
@@ -201,10 +201,9 @@ const Nutrition = () => {
   const [logs, setLogs] = useState([]);
   const [loading, setLoading] = useState(true);
   const { user, token } = useAuth();
-  const { showSuccess, showError } = useToast();
 
   useEffect(() => {
-    // R�cup�rer les recettes depuis le backend
+    // R├®cup├®rer les recettes depuis le backend
     getRecipes()
       .then(data => {
         // Normalize recipes to ensure ingredients and steps are arrays
@@ -218,26 +217,26 @@ const Nutrition = () => {
         setLoading(false);
       })
       .catch(err => {
-        console.error("Erreur lors de la r�cup�ration des recettes:", err);
+        console.error("Erreur lors de la r├®cup├®ration des recettes:", err);
         setRecipes(mockRecipes); // Use mock data on error
         setLoading(false);
       });
   }, []);
 
   useEffect(() => {
-    // R�cup�rer le journal nutritionnel d'aujourd'hui
+    // R├®cup├®rer le journal nutritionnel d'aujourd'hui
     if (token) {
       getNutritionLogs(token)
         .then(data => {
           setLogs(data);
         })
-        .catch(err => console.error("Erreur lors de la r�cup�ration des logs:", err));
+        .catch(err => console.error("Erreur lors de la r├®cup├®ration des logs:", err));
     }
   }, [token]);
 
   const handleLogMeal = async (recipe) => {
     if (!token) {
-      showError("Veuillez vous connecter pour enregistrer vos repas !");
+      alert("Veuillez vous connecter pour enregistrer vos repas !");
       return;
     }
 
@@ -249,12 +248,12 @@ const Nutrition = () => {
         protein: recipe.protein
       });
 
-      alert(`${recipe.name} ajout� � votre journ�e !`);
+      alert(`${recipe.name} ajout├® ├á votre journ├®e !`);
       setLogs(prev => [data.log, ...prev]);
       setSelectedRecipe(null);
     } catch (err) {
       console.error("Erreur lors de l'enregistrement:", err);
-      showError("Erreur lors de l'enregistrement");
+      alert("Erreur lors de l'enregistrement");
     }
   };
 
@@ -278,7 +277,7 @@ const Nutrition = () => {
         <header style={{ textAlign: 'center', marginBottom: '4rem' }}>
           <h1 style={{ fontSize: '3.5rem', fontWeight: 900, marginBottom: '1rem', letterSpacing: '-0.05em' }}>Nutrition & Recettes</h1>
           <p style={{ color: 'var(--on-surface-variant)', fontSize: '1.125rem', maxWidth: '42rem', margin: '0 auto', fontWeight: 500 }}>
-            Alimentez votre corps avec vitalit�. D�couvrez notre s�lection de repas sains, gourmands et �quilibr�s.
+            Alimentez votre corps avec vitalit├®. D├®couvrez notre s├®lection de repas sains, gourmands et ├®quilibr├®s.
           </p>
         </header>
 
@@ -288,7 +287,7 @@ const Nutrition = () => {
             <h2 className="text-2xl font-black" style={{ color: 'var(--primary)' }}>Votre Journal d'Aujourd'hui</h2>
             <div style={{ display: 'flex', gap: '3rem', flexWrap: 'wrap', justifyContent: 'center' }}>
               <div style={{ padding: '1.5rem 3rem', backgroundColor: 'white', borderRadius: '24px', boxShadow: '0 4px 20px rgba(0,0,0,0.05)' }}>
-                <span className="block text-xs uppercase font-bold tracking-wider text-on-surface-variant">Calories Consomm�es</span>
+                <span className="block text-xs uppercase font-bold tracking-wider text-on-surface-variant">Calories Consomm├®es</span>
                 <span style={{ fontSize: '3rem', fontWeight: 950, color: 'var(--primary)' }}>{totalTodayKcal} <span style={{ fontSize: '1.25rem', fontWeight: 700 }}>kcal</span></span>
               </div>
             </div>
@@ -296,12 +295,12 @@ const Nutrition = () => {
             {/* List of today's eaten meals */}
             {logs.length > 0 && (
               <div style={{ width: '100%', maxWidth: '500px', display: 'flex', flexDirection: 'column', gap: '0.75rem', marginTop: '1rem' }}>
-                <p style={{ fontSize: '0.875rem', fontWeight: 900, color: 'var(--secondary)', textTransform: 'uppercase', textAlign: 'left' }}>Repas de la journ�e</p>
+                <p style={{ fontSize: '0.875rem', fontWeight: 900, color: 'var(--secondary)', textTransform: 'uppercase', textAlign: 'left' }}>Repas de la journ├®e</p>
                 {logs.map(log => (
                   <div key={log.id} style={{ display: 'flex', justifyContent: 'between', alignItems: 'center', padding: '1rem', backgroundColor: 'white', borderRadius: '16px', boxShadow: '0 2px 8px rgba(0,0,0,0.02)' }}>
                     <div style={{ textAlign: 'left', flexGrow: 1 }}>
                       <span className="font-bold">{log.name}</span>
-                      {log.protein && <span className="block text-xs text-on-surface-variant font-bold">Prot�ines: {log.protein}</span>}
+                      {log.protein && <span className="block text-xs text-on-surface-variant font-bold">Prot├®ines: {log.protein}</span>}
                     </div>
                     <span className="font-black text-primary">{log.kcal} kcal</span>
                   </div>
@@ -313,7 +312,7 @@ const Nutrition = () => {
 
         {/* Category Filters */}
         <section style={{ display: 'flex', flexWrap: 'wrap', justifyContent: 'center', gap: '0.75rem', marginBottom: '4rem' }}>
-          {['Tous', 'Petit-d�jeuner', 'D�jeuner', 'Snacks', 'D�ner'].map(cat => (
+          {['Tous', 'Petit-d├®jeuner', 'D├®jeuner', 'Snacks', 'D├«ner'].map(cat => (
             <button 
               key={cat} 
               className={`btn ${filter === cat ? 'btn-primary' : ''}`}
@@ -365,11 +364,11 @@ const Nutrition = () => {
                     </div>
                     <div style={{ display: 'flex', alignItems: 'center', gap: '0.25rem' }}>
                       <span className="material-symbols-outlined" style={{ color: 'var(--secondary)', fontSize: '1.25rem' }}>fitness_center</span>
-                      {recipe.protein} Prot�ines
+                      {recipe.protein} Prot├®ines
                     </div>
                   </div>
                   <div style={{ marginBottom: '2rem' }}>
-                    <p style={{ fontSize: '0.75rem', fontWeight: 900, color: 'var(--secondary)', textTransform: 'uppercase', letterSpacing: '0.1em', marginBottom: '0.75rem' }}>Ingr�dients</p>
+                    <p style={{ fontSize: '0.75rem', fontWeight: 900, color: 'var(--secondary)', textTransform: 'uppercase', letterSpacing: '0.1em', marginBottom: '0.75rem' }}>Ingr├®dients</p>
                     <ul style={{ padding: 0, listStyle: 'none', margin: 0 }}>
                       {Array.isArray(recipe.ingredients) && recipe.ingredients.slice(0, 4).map((ing, i) => (
                         <li key={i} style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', marginBottom: '0.25rem', fontSize: '0.875rem', color: 'var(--on-surface-variant)' }}>
@@ -399,7 +398,7 @@ const Nutrition = () => {
             <h2 style={{ fontSize: '2.5rem', fontWeight: 900, marginBottom: '1.5rem', color: 'var(--primary)', letterSpacing: '-0.025em' }}>{selectedRecipe.name}</h2>
             
             <div style={{ marginBottom: '2rem' }}>
-              <h4 style={{ fontWeight: 700, marginBottom: '1rem', textTransform: 'uppercase', fontSize: '0.875rem', color: 'var(--secondary)' }}>Ingr�dients</h4>
+              <h4 style={{ fontWeight: 700, marginBottom: '1rem', textTransform: 'uppercase', fontSize: '0.875rem', color: 'var(--secondary)' }}>Ingr├®dients</h4>
               <ul style={{ listStyle: 'none', padding: 0 }}>
                 {Array.isArray(selectedRecipe.ingredients) && selectedRecipe.ingredients.map((ing, i) => (
                   <li key={i} style={{ display: 'flex', alignItems: 'center', gap: '0.75rem', marginBottom: '0.5rem', color: 'var(--on-surface-variant)' }}>
@@ -411,7 +410,7 @@ const Nutrition = () => {
             </div>
 
             <div style={{ marginBottom: '2.5rem' }}>
-              <h4 style={{ fontWeight: 700, marginBottom: '1rem', textTransform: 'uppercase', fontSize: '0.875rem', color: 'var(--secondary)' }}>Pr�paration</h4>
+              <h4 style={{ fontWeight: 700, marginBottom: '1rem', textTransform: 'uppercase', fontSize: '0.875rem', color: 'var(--secondary)' }}>Pr├®paration</h4>
               <ol style={{ paddingLeft: '1.5rem', color: 'var(--on-surface-variant)' }}>
                 {Array.isArray(selectedRecipe.steps) && selectedRecipe.steps.map((step, i) => (
                   <li key={i} style={{ marginBottom: '1rem', lineHeight: 1.6 }}>{step}</li>
@@ -427,7 +426,7 @@ const Nutrition = () => {
                 onClick={() => handleLogMeal(selectedRecipe)}
               >
                 <span className="material-symbols-outlined">add_circle</span>
-                Ajouter � ma journ�e (+{selectedRecipe.kcal} kcal)
+                Ajouter ├á ma journ├®e (+{selectedRecipe.kcal} kcal)
               </button>
             )}
           </div>
@@ -441,5 +440,3 @@ const Nutrition = () => {
 };
 
 export default Nutrition;
-
-
