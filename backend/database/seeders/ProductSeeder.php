@@ -42,7 +42,70 @@ class ProductSeeder extends Seeder
                 'badge' => "Best Seller",
                 'stock' => 25,
                 'img' => "https://lh3.googleusercontent.com/aida-public/AB6AXuCB9M-pCL41dMmY9aRNzlBGugpJ2gKtlBmPQP74aVlwN6ThcJIuLlb5vu4mJU0MEntEA3cT6Z7kVLSwPoEan8nm3XvBeMPR9tcKFxNKdh77ANkotVTh2b7iLa3LPwbQ9jZHbeAfj1Y8uXWjfiVpIhRslhNFz6yudZGkOEBGklJVilB3eUZV0js33dC2boBB_xFMtzEhMl9rI7JtvXH9ejFspja9HWTE5PJfpDegeb9FnCfbJClLEokgLWmHX5nVwBZ8sfeCdA4LGBg"
-            ]
+            ],
+            [
+                'name' => "Legging Performance Flex",
+                'category' => "vêtements femme",
+                'price' => 89.99,
+                'label' => "Apparel",
+                'badge' => "Tendance",
+                'stock' => 30,
+                'img' => "https://images.unsplash.com/photo-1506629082955-511b1aa562c8?w=800&auto=format&fit=crop"
+            ],
+            [
+                'name' => "Top Entraînement Air",
+                'category' => "vêtements femme",
+                'price' => 44.99,
+                'label' => "Apparel",
+                'badge' => null,
+                'stock' => 22,
+                'img' => "https://images.unsplash.com/photo-1515886657613-9f3515b0c78f?w=800&auto=format&fit=crop"
+            ],
+            [
+                'name' => "Whey Isolate Chocolat",
+                'category' => "protéines",
+                'price' => 69.99,
+                'label' => "Nutrition",
+                'badge' => "Best Seller",
+                'stock' => 40,
+                'img' => "https://images.unsplash.com/photo-1593095948071-474c5cc2989d?w=800&auto=format&fit=crop"
+            ],
+            [
+                'name' => "Créatine Monohydrate 300g",
+                'category' => "protéines",
+                'price' => 39.99,
+                'label' => "Nutrition",
+                'badge' => null,
+                'stock' => 35,
+                'img' => "https://images.unsplash.com/photo-1579722821270-1f4205d291b7?w=800&auto=format&fit=crop"
+            ],
+            [
+                'name' => "Haltères Ajustables 2x10kg",
+                'category' => "matériels",
+                'price' => 89.99,
+                'label' => "Equipment",
+                'badge' => "Pro",
+                'stock' => 15,
+                'img' => "https://images.unsplash.com/photo-1534438327276-14e5300a3a48?w=800&auto=format&fit=crop"
+            ],
+            [
+                'name' => "Corde à Sauter Speed",
+                'category' => "matériels",
+                'price' => 22.99,
+                'label' => "Equipment",
+                'badge' => null,
+                'stock' => 50,
+                'img' => "https://images.unsplash.com/photo-1601422466-94baf4757f2f?w=800&auto=format&fit=crop"
+            ],
+            [
+                'name' => "Kit Training Maison",
+                'category' => "matériels",
+                'price' => 49.9,
+                'label' => "Equipment",
+                'badge' => "Pack",
+                'stock' => 20,
+                'img' => "https://lh3.googleusercontent.com/aida-public/AB6AXuC_bA3AN51XFXpdoY9UYtutmU8NUMCoLSwDu4JlsN3qHQXhdJ_aBbfcCsZY7LDjBKBmZ98U_joIe08bJdMHZf0g_Z1klOl5NTXmcg4HQ1yQaXhxtr3egssxTo_yS9wodHybJoq4PcDbQmgJ2n4bysKnTN7m_xJb9W-BYGl9JGysUIlNuO_0YAVRfvr-ru_4WbjhmL0SDFSO2QBaRT_NV7XCqwriwj6UycXXCPtYxVpkBpNUrRSvO0Z09gtXXcNqDd-tKSA335c8lrk"
+            ],
         ];
 
         foreach ($products as $product) {

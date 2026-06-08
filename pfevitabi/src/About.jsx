@@ -188,7 +188,7 @@ const About = () => {
               <div className="about-founder-card">
                 <div className="about-founder-image">
                   <img
-                    src="/ihsane image.png"
+                    src="/ihsan.png"
                     alt="Ihsan Motich"
                     onError={(event) => {
                       event.currentTarget.onerror = null;
@@ -206,7 +206,7 @@ const About = () => {
               <div className="about-founder-card">
                 <div className="about-founder-image">
                   <img
-                    src="/bouchra image.png"
+                    src="/bouchra.png"
                     alt="Bouchra Baidouch"
                     onError={(event) => {
                       event.currentTarget.onerror = null;
