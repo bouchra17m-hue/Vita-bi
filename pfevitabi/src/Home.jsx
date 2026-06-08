@@ -197,11 +197,11 @@ const Home = () => {
               </Link>
 
               <Link
-                to="/calculator"
+to="/calculator"
                 className="premium-card reveal-on-scroll"
                 style={{
                   '--accent': 'var(--tertiary)',
-                  '--bg': url(),
+                  '--bg': "url('https://images.unsplash.com/photo-1581092795358-7e2a7c4d4d6f?q=80&w=800&auto=format&fit=crop')",
                 }}
               >
                 <div className="premium-card__media" />
