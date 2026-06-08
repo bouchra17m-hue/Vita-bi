@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import { CartProvider } from './CartContext';
 import { AuthProvider } from './AuthContext';
+import { ToastProvider } from './components/Toast';
 import Navbar from './components/Navbar';
 import Home from './Home';
 import Shop from './Shop';
@@ -37,6 +38,7 @@ function App() {
 
   return (
     <AuthProvider>
+      <ToastProvider>
       <CartProvider>
         <Router>
           <ScrollToTop />
@@ -60,6 +62,7 @@ function App() {
           </div>
         </Router>
       </CartProvider>
+      </ToastProvider>
     </AuthProvider>
   );
 }

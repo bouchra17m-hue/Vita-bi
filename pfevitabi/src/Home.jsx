@@ -1,10 +1,13 @@
 import { useEffect } from 'react';
 import { Link } from 'react-router-dom';
+import { useToast } from './useToast';
 import TickerBar from './TickerBar';
 import Footer from './Footer';
 import './Home.css';
 
 const Home = () => {
+  const toast = useToast();
+
   useEffect(() => {
     const elements = Array.from(document.querySelectorAll('.reveal-on-scroll'));
     if (elements.length === 0) return;
@@ -253,7 +256,8 @@ const Home = () => {
               className="newsletter-form"
               onSubmit={(e) => {
                 e.preventDefault();
-                alert('Merci de votre inscription !');
+                toast.success('Merci de votre inscription !');
+                e.currentTarget.reset();
               }}
             >
               <input className="newsletter-input" placeholder="votre@email.com" type="email" required />
