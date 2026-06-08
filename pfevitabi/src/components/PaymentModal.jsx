@@ -2,11 +2,13 @@ import React, { useState, useEffect } from 'react';
 import { useAuth } from '../AuthContext';
 import { useCart } from '../useCart';
 import { useNavigate } from 'react-router-dom';
-import { createOrder } from '../api';
+import { createOrder } from '..\/api';
+import { useToast } from './Toast';
 import './PaymentModal.css';
 
 const PaymentModal = ({ isOpen, onClose, totalAmount }) => {
   const { user, token } = useAuth();
+  const toast = useToast();
   const { cartItems, clearCart } = useCart();
   const navigate = useNavigate();
 
@@ -35,7 +37,7 @@ const PaymentModal = ({ isOpen, onClose, totalAmount }) => {
 
   useEffect(() => {
     if (isOpen && (!user || !token)) {
-      alert('Veuillez vous inscrire ou vous connecter pour passer une commande.');
+      toast.showInfo("Veuillez vous inscrire ou vous connecter pour passer une commande.");
       onClose();
       navigate('/login');
     }
@@ -106,7 +108,7 @@ const PaymentModal = ({ isOpen, onClose, totalAmount }) => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     if (!user || !token) {
-      alert('Veuillez vous inscrire ou vous connecter pour passer une commande.');
+      toast.showInfo("Veuillez vous inscrire ou vous connecter pour passer une commande.");
       onClose();
       navigate('/login');
       return;

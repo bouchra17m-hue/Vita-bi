@@ -3,8 +3,11 @@ import { Link } from 'react-router-dom';
 import TickerBar from './TickerBar';
 import Footer from './Footer';
 import './Home.css';
+import { useToast } from './components/Toast';
 
 const Home = () => {
+  const toast = useToast();
+
   useEffect(() => {
     const elements = Array.from(document.querySelectorAll('.reveal-on-scroll'));
     if (elements.length === 0) return;
@@ -80,7 +83,7 @@ const Home = () => {
                 marginBottom: '1.5rem',
                 textTransform: 'uppercase'
               }}>
-                Performance Ã‰lite
+                Performance Élite
               </div>
               <h1 style={{ 
                 fontSize: 'clamp(3rem, 8vw, 5.5rem)', 
@@ -90,7 +93,7 @@ const Home = () => {
                 marginBottom: '1.5rem',
                 color: 'var(--surface)'
               }}>
-                DÃ©passez <br/>
+                Dépassez <br/>
                 <span style={{ 
                   color: 'var(--primary)', 
                   fontStyle: 'italic'
@@ -105,7 +108,7 @@ const Home = () => {
                 fontWeight: 500,
                 opacity: 0.9
               }}>
-                L'alliance parfaite entre science nutritionnelle, Ã©quipement de pointe et technologie intelligente.
+                L'alliance parfaite entre science nutritionnelle, équipement de pointe et technologie intelligente.
               </p>
               <div className="flex gap-4">
                 <Link to="/shop" className="btn btn-primary" style={{ padding: '1.125rem 3rem', fontSize: '1rem' }}>DECOUVRIR LE SHOP</Link>
@@ -143,10 +146,10 @@ const Home = () => {
           <div className="container">
             <div className="ecosystem-header reveal-on-scroll">
               <h2 className="ecosystem-title">
-                L'Ã‰COSYSTÃˆME <span>VITABI</span>
+                L'ÉCOSYSTÈME <span>VITABI</span>
               </h2>
               <p className="ecosystem-subtitle">
-                Un Ã©cosystÃ¨me complet pour performer: Ã©quipement, nutrition, analyse et coaching.
+                Un écosystème complet pour performer: équipement, nutrition, analyse et coaching.
               </p>
             </div>
 
@@ -167,8 +170,8 @@ const Home = () => {
                     <span className="material-symbols-outlined">shopping_bag</span>
                   </div>
                   <h3>Shop</h3>
-                  <p>Ã‰quipement premium et accessoires de performance.</p>
-                  <div className="premium-card__cta">DÃ©couvrir â†’</div>
+                  <p>Équipement premium et accessoires de performance.</p>
+                  <div className="premium-card__cta">Découvrir ?</div>
                 </div>
               </Link>
 
@@ -189,7 +192,7 @@ const Home = () => {
                   </div>
                   <h3>Nutrition</h3>
                   <p>Plans, recettes et guidance pour atteindre vos objectifs.</p>
-                  <div className="premium-card__cta">Explorer â†’</div>
+                  <div className="premium-card__cta">Explorer ?</div>
                 </div>
               </Link>
 
@@ -198,7 +201,7 @@ const Home = () => {
                 className="premium-card reveal-on-scroll"
                 style={{
                   '--accent': 'var(--tertiary)',
-                  '--bg': `url(${new URL('./assets/hero.png', import.meta.url).href})`,
+                  '--bg': url(),
                 }}
               >
                 <div className="premium-card__media" />
@@ -208,8 +211,8 @@ const Home = () => {
                     <span className="material-symbols-outlined">calculate</span>
                   </div>
                   <h3>Calculateur</h3>
-                  <p>Macros, calories et suivi: prÃ©cis, simple, efficace.</p>
-                  <div className="premium-card__cta">Lancer â†’</div>
+                  <p>Macros, calories et suivi: précis, simple, efficace.</p>
+                  <div className="premium-card__cta">Lancer ?</div>
                 </div>
               </Link>
             </div>
@@ -221,8 +224,8 @@ const Home = () => {
           <div className="container">
             <div className="cta-glass reveal-on-scroll">
               <div className="cta-copy">
-                <h3>Rejoignez la rÃ©volution fitness.</h3>
-                <p>DÃ©bloquez une expÃ©rience premium: routines, nutrition et coaching.</p>
+                <h3>Rejoignez la révolution fitness.</h3>
+                <p>Débloquez une expérience premium: routines, nutrition et coaching.</p>
               </div>
               <div className="cta-metrics">
                 <div className="cta-metric">
@@ -231,7 +234,7 @@ const Home = () => {
                 </div>
                 <div className="cta-metric">
                   <div className="cta-metric__value">1M+</div>
-                  <div className="cta-metric__label">Calories brÃ»lÃ©es</div>
+                  <div className="cta-metric__label">Calories brûlées</div>
                 </div>
               </div>
               <Link to="/login" className="btn btn-primary cta-btn">
@@ -246,14 +249,14 @@ const Home = () => {
         <section className="newsletter newsletter-premium">
           <div className="newsletter-box newsletter-box--center reveal-on-scroll" style={{ background: 'var(--on-surface)' }}>
             <div className="newsletter-copy">
-              <h2>PrÃªt Ã  briller ?</h2>
+              <h2>Prêt à briller ?</h2>
               <p>Inscrivez-vous pour nos offres flash.</p>
             </div>
             <form
               className="newsletter-form"
               onSubmit={(e) => {
                 e.preventDefault();
-                alert('Merci de votre inscription !');
+                toast.showSuccess("Merci de votre inscription !");
               }}
             >
               <input className="newsletter-input" placeholder="votre@email.com" type="email" required />
@@ -272,3 +275,4 @@ const Home = () => {
 };
 
 export default Home;
+
