@@ -71,6 +71,15 @@
   padding: 1.5rem;
   background: var(--primary);
   color: white;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.chat-header-actions {
+  display: flex;
+  gap: 8px;
+  align-items: center;
 }
 
 .header-info {
@@ -115,6 +124,41 @@
   border-radius: 50%;
 }
 
+.chat-menu-btn {
+  background: rgba(255,255,255,0.2);
+  border: none;
+  color: white;
+  width: 32px;
+  height: 32px;
+  border-radius: 8px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.chat-menu-btn:hover {
+  background: rgba(255,255,255,0.3);
+  transform: scale(1.05);
+}
+
+/* Error Message */
+.chat-error {
+  background: #fee2e2;
+  color: #dc2626;
+  padding: 0.75rem 1rem;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 0.875rem;
+  border-bottom: 1px solid #fecaca;
+}
+
+.chat-error span {
+  font-size: 18px;
+}
+
 .chat-messages {
   flex-grow: 1;
   padding: 1.5rem;
@@ -124,12 +168,37 @@
   gap: 1rem;
 }
 
+/* Scrollbar Styling */
+.chat-messages::-webkit-scrollbar {
+  width: 6px;
+}
+
+.chat-messages::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.chat-messages::-webkit-scrollbar-thumb {
+  background: #d1d5db;
+  border-radius: 3px;
+}
+
+.chat-messages::-webkit-scrollbar-thumb:hover {
+  background: #9ca3af;
+}
+
 .message-bubble {
   max-width: 80%;
   padding: 1rem 1.25rem;
   border-radius: 18px;
   font-size: 0.9rem;
   line-height: 1.5;
+  word-wrap: break-word;
+  animation: fadeIn 0.3s ease-in;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(10px); }
+  to { opacity: 1; transform: translateY(0); }
 }
 
 .message-bubble.assistant {
@@ -167,6 +236,7 @@
   border-top: 1px solid #f3f4f6;
   display: flex;
   gap: 10px;
+  background: #fafafa;
 }
 
 .chat-input-area input {
@@ -181,6 +251,11 @@
 
 .chat-input-area input:focus {
   border-color: var(--primary);
+}
+
+.chat-input-area input:disabled {
+  background: #f3f4f6;
+  cursor: not-allowed;
 }
 
 .chat-input-area button {
@@ -210,7 +285,9 @@
 @media (max-width: 480px) {
   .ai-chat-window {
     width: calc(100vw - 40px);
+    height: 60vh;
+    max-height: 600px;
+    bottom: 80px;
     right: -10px;
-    height: 450px;
   }
 }

@@ -1,14 +1,27 @@
 import { useState, useEffect, useRef } from 'react';
+import { useAuth } from './AuthContext';
+import { sendMessageToAI, buildSystemPrompt, saveChatHistory, getChatHistory, clearChatHistory } from './services/aiCoachService';
 import './AICoach.css';
 
 const AICoach = () => {
+  const { user } = useAuth();
   const [isOpen, setIsOpen] = useState(false);
   const [messages, setMessages] = useState([
-    { role: 'assistant', content: 'Bonjour ! Je suis votre coach VitaBi AI. Prête à transformer votre journée ? Comment puis-je vous aider aujourd\'hui ?' }
+    { role: 'assistant', content: 'Bonjour ! 👋 Je suis votre coach VitaBi AI. Prêt à transformer votre journée ? Comment puis-je vous aider aujourd\'hui ?' }
   ]);
   const [input, setInput] = useState('');
   const [isTyping, setIsTyping] = useState(false);
+  const [error, setError] = useState('');
+  const [isLoading, setIsLoading] = useState(false);
   const messagesEndRef = useRef(null);
+
+  // Charger l'historique au démarrage
+  useEffect(() => {
+    const savedHistory = getChatHistory();
+    if (savedHistory.length > 0) {
+      setMessages(savedHistory);
+    }
+  }, []);
 
   const scrollToBottom = () => {
     messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
@@ -18,59 +31,100 @@ const AICoach = () => {
     scrollToBottom();
   }, [messages, isTyping]);
 
+  // Sauvegarder l'historique quand les messages changent
+  useEffect(() => {
+    if (messages.length > 1) {
+      saveChatHistory(messages);
+    }
+  }, [messages]);
+
   useEffect(() => {
     const openCoach = () => setIsOpen(true);
     window.addEventListener('vitabi:open-ai-coach', openCoach);
     return () => window.removeEventListener('vitabi:open-ai-coach', openCoach);
   }, []);
 
+  // Construire le contexte utilisateur
+  const getUserContext = () => {
+    if (!user) return null;
+    
+    // Essayer de récupérer le programme généré
+    const programData = localStorage.getItem('vitabi-programs');
+    let program = null;
+    if (programData) {
+      try {
+        const programs = JSON.parse(programData);
+        program = programs[programs.length - 1];
+      } catch (e) {
+        console.log('Impossible de charger le programme');
+      }
+    }
+
+    return {
+      name: user?.name || 'Utilisateur',
+      goal: program?.profile?.goal || null,
+      weight: program?.profile?.weight || null,
+      height: program?.profile?.height || null,
+      age: program?.profile?.age || null,
+      experience: program?.profile?.experience || null,
+    };
+  };
+
   const handleSend = async () => {
-    if (!input.trim()) return;
+    if (!input.trim() || isLoading) return;
 
     const userMessage = { role: 'user', content: input };
-    setMessages(prev => [...prev, userMessage]);
+    const newMessages = [...messages, userMessage];
+    setMessages(newMessages);
     setInput('');
     setIsTyping(true);
+    setError('');
+    setIsLoading(true);
 
-    // Mock AI Response Logic
-    setTimeout(() => {
-      let response = "C'est une excellente question ! En tant que coach VitaBi, je vous recommande de vous concentrer sur une hydratation optimale et un apport équilibré en protéines pour soutenir vos objectifs.";
+    try {
+      // Préparer les messages pour l'API
+      const messagesForAPI = newMessages.map(msg => ({
+        role: msg.role === 'assistant' ? 'assistant' : 'user',
+        content: msg.content,
+      }));
+
+      const userContext = getUserContext();
       
-      const lowerInput = input.toLowerCase();
-      if (lowerInput.includes('faim') || lowerInput.includes('manger') || lowerInput.includes('recette')) {
-        response = "Pour une collation saine, je vous suggère un Pudding de Chia aux baies ou une Omelette Avocat & Épinards. C'est parfait pour l'énergie !";
-      } else if (lowerInput.includes('sport') || lowerInput.includes('exercice') || lowerInput.includes('entrainement')) {
-        response = "Une séance de 20 minutes de HIIT est idéale pour booster votre métabolisme. N'oubliez pas de bien vous étirer après !";
-      } else if (lowerInput.includes('calcul') || lowerInput.includes('imc') || lowerInput.includes('calories')) {
-        response = "Utilisez notre Calculateur Intelligent dans l'onglet 'Calculator' pour obtenir vos besoins précis. Je peux ensuite vous aider à planifier vos repas !";
-      }
-
+      // Appeler l'API AI
+      const response = await sendMessageToAI(messagesForAPI, userContext);
+      
       setMessages(prev => [...prev, { role: 'assistant', content: response }]);
       setIsTyping(false);
-    }, 1500);
+    } catch (err) {
+      setIsTyping(false);
+      setError('Erreur de connexion avec le coach. Vérifiez votre connexion.');
+      console.error('Erreur AI:', err);
+      
+      // Message de fallback
+      setMessages(prev => [...prev, { 
+        role: 'assistant', 
+        content: '⚠️ Je rencontre une petite difficulté. Essayez de reformuler votre question ou contactez le support.' 
+      }]);
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
+  const handleNewChat = () => {
+    if (window.confirm('Êtes-vous sûr ? Cela supprimera l\'historique du chat.')) {
+      clearChatHistory();
+      setMessages([
+        { role: 'assistant', content: 'Bonjour ! 👋 Je suis votre coach VitaBi AI. Prêt à transformer votre journée ? Comment puis-je vous aider aujourd\'hui ?' }
+      ]);
+    }
   };
 
   return (
-    <div className={`ai-coach-wrapper ${isOpen ? 'is-open' : ''}`}>
-      {/* Floating Button */}
-      <button 
-        className="ai-coach-trigger" 
-        onClick={() => setIsOpen(!isOpen)}
-        title="Parler au Coach AI"
-      >
-        <div className="trigger-icon">
-          {isOpen ? (
-            <span className="material-symbols-outlined">close</span>
-          ) : (
-            <span className="material-symbols-outlined">smart_toy</span>
-          )}
-        </div>
-        {!isOpen && <div className="trigger-pulse"></div>}
-      </button>
-
+    <>
       {/* Chat Window */}
       {isOpen && (
         <div className="ai-chat-window">
+          {/* Chat Header */}
           <div className="chat-header">
             <div className="header-info">
               <div className="bot-avatar">
@@ -81,8 +135,33 @@ const AICoach = () => {
                 <p><span className="status-dot"></span> En ligne</p>
               </div>
             </div>
+            <div className="chat-header-actions">
+              <button 
+                className="chat-menu-btn"
+                title="Nouveau chat"
+                onClick={handleNewChat}
+              >
+                <span className="material-symbols-outlined">add</span>
+              </button>
+              <button 
+                className="chat-menu-btn"
+                title="Fermer"
+                onClick={() => setIsOpen(false)}
+              >
+                <span className="material-symbols-outlined">close</span>
+              </button>
+            </div>
           </div>
 
+          {/* Error Message */}
+          {error && (
+            <div className="chat-error">
+              <span className="material-symbols-outlined">error</span>
+              {error}
+            </div>
+          )}
+
+          {/* Chat Messages */}
           <div className="chat-messages">
             {messages.map((msg, index) => (
               <div key={index} className={`message-bubble ${msg.role}`}>
@@ -97,21 +176,31 @@ const AICoach = () => {
             <div ref={messagesEndRef} />
           </div>
 
+          {/* Chat Input Area */}
           <div className="chat-input-area">
             <input 
               type="text" 
               placeholder="Posez votre question..." 
               value={input}
               onChange={(e) => setInput(e.target.value)}
-              onKeyPress={(e) => e.key === 'Enter' && handleSend()}
+              onKeyPress={(e) => e.key === 'Enter' && !isLoading && handleSend()}
+              disabled={isLoading}
             />
-            <button onClick={handleSend} disabled={!input.trim()}>
-              <span className="material-symbols-outlined">send</span>
+            <button 
+              onClick={handleSend} 
+              disabled={!input.trim() || isLoading}
+              title={isLoading ? 'Attente de la réponse...' : 'Envoyer'}
+            >
+              {isLoading ? (
+                <span className="material-symbols-outlined">schedule</span>
+              ) : (
+                <span className="material-symbols-outlined">send</span>
+              )}
             </button>
           </div>
         </div>
       )}
-    </div>
+    </>
   );
 };
 

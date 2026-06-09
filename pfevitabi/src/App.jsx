@@ -16,6 +16,7 @@ import AdminProducts from './AdminProducts';
 import CustomCursor from './CustomCursor';
 import ScrollToTop from './ScrollToTop';
 import WaitlistModal from './WaitlistModal';
+import AICoach from './AICoach';
 
 function App() {
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -46,6 +47,7 @@ function App() {
             <CustomCursor />
             <WaitlistModal isOpen={isModalOpen} onClose={handleCloseModal} />
             <Navbar />
+            <AICoach />
             <main className="page-content">
               <Routes>
                 <Route path="/" element={<Home />} />

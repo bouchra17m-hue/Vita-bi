@@ -491,7 +491,7 @@ const Shop = () => {
       <Footer />
 
       {/* FAB */}
-      <button className="btn btn-primary" style={{ position: 'fixed', bottom: '2rem', right: '2rem', width: '4rem', height: '4rem', borderRadius: '50%', boxShadow: '0 8px 32px rgba(224,64,160,0.4)', display: 'flex', alignItems: 'center', justifyContent: 'center', zIndex: 40 }} onClick={() => alert('Chat de support bientôt disponible !')}>
+      <button className="btn btn-primary" style={{ position: 'fixed', bottom: '2rem', right: '2rem', width: '4rem', height: '4rem', borderRadius: '50%', boxShadow: '0 8px 32px rgba(224,64,160,0.4)', display: 'flex', alignItems: 'center', justifyContent: 'center', zIndex: 40 }} onClick={() => window.dispatchEvent(new Event('vitabi:open-ai-coach'))}>
         <span className="material-symbols-outlined" style={{ fontSize: '2rem' }}>chat</span>
       </button>
     </div>
