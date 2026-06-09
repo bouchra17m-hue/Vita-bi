@@ -31,3 +31,7 @@ services:
         value: "sync"
       - key: SESSION_DRIVER
         value: "file"
+      - key: APP_KEY
+        sync: false
+      - key: SANCTUM_STATEFUL_DOMAINS
+        value: "localhost,127.0.0.1,vita-bi.vercel.app"
