@@ -1,60 +1,114 @@
-const API_URL = (() => {
+let API_URL = '';
+let FALLBACK_API_URLS = [];
+
+const initializeApiUrl = () => {
+  // Priority 1: Explicit environment variable
   const envUrl = import.meta.env.VITE_API_URL;
   if (envUrl && envUrl.trim()) {
-    return envUrl.replace(/\/$/, '');
+    API_URL = envUrl.replace(/\/$/, '');
+    return;
   }
-  if (import.meta.env.PROD) {
-    return '';
+
+  // Priority 2: Detect from current hostname
+  const hostname = window.location.hostname;
+  
+  // Local development
+  if (hostname === 'localhost' || hostname === '127.0.0.1') {
+    API_URL = 'http://127.0.0.1:8000';
+    return;
   }
-  return 'http://127.0.0.1:8000';
-})();
+  
+  // Production on Vercel - try multiple backends
+  if (hostname.includes('vercel.app')) {
+    API_URL = 'https://boushera-bai.alwaysdata.net';
+    FALLBACK_API_URLS = [
+      'https://vitabi-backend-xxxx.onrender.com', // Render fallback (user needs to set their actual URL)
+    ];
+    return;
+  }
+  
+  // Default fallback
+  API_URL = import.meta.env.PROD ? '' : 'http://127.0.0.1:8000';
+};
+
+initializeApiUrl();
 
 const IS_PRODUCTION = import.meta.env.PROD;
 
 export const getApiUrl = () => API_URL;
 
 export const apiCall = async (endpoint, options = {}) => {
-  const url = `${API_URL}${endpoint}`;
-  const headers = {
-    'Accept': 'application/json',
-    ...(options.headers || {}),
-  };
+  const urls = [API_URL, ...FALLBACK_API_URLS].filter(Boolean);
+  let lastError = null;
+  let lastResponse = null;
 
-  let response;
-  try {
-    response = await fetch(url, { ...options, headers });
-  } catch (error) {
+  for (const baseUrl of urls) {
+    const url = `${baseUrl}${endpoint}`;
+    const headers = {
+      'Accept': 'application/json',
+      ...(options.headers || {}),
+    };
+
+    let response;
+    try {
+      response = await fetch(url, { ...options, headers });
+      lastResponse = response;
+      
+      // Si la réponse est OK, l'utiliser
+      if (response.ok) {
+        return response.json();
+      }
+      
+      // Sinon, essayer le fallback
+      lastError = {
+        status: response.status,
+        statusText: response.statusText,
+        url: baseUrl,
+      };
+      continue;
+    } catch (error) {
+      // Erreur de connexion, essayer le fallback
+      lastError = error;
+      continue;
+    }
+  }
+
+  // Si aucune URL n'a fonctionné, afficher l'erreur
+  if (lastError instanceof Error) {
     const displayUrl = API_URL || 'API serveur';
     throw new Error(
       `Impossible de joindre le serveur (${displayUrl}). ` +
       `Vérifiez votre connexion. ` +
-      `Détail: ${error.message}`
+      `Détail: ${lastError.message}`
     );
-  }
-
-  if (!response.ok) {
-    let message = `Erreur API: ${response.status} ${response.statusText}`;
-    try {
-      const data = await response.json();
-      if (typeof data === 'object' && data !== null) {
-        if (data.message && typeof data.message === 'string') {
-          message = data.message;
-        } else if (data.errors) {
-          const parts = [];
-          for (const key of Object.keys(data.errors)) {
-            const val = data.errors[key];
-            parts.push(`${key}: ${Array.isArray(val) ? val.join(' ') : val}`);
+  } else if (lastError && lastError.status) {
+    let message = `Erreur API: ${lastError.status} ${lastError.statusText}`;
+    
+    // Essayer d'extraire le message d'erreur de la réponse
+    if (lastResponse) {
+      try {
+        const data = await lastResponse.json();
+        if (typeof data === 'object' && data !== null) {
+          if (data.message && typeof data.message === 'string') {
+            message = data.message;
+          } else if (data.errors) {
+            const parts = [];
+            for (const key of Object.keys(data.errors)) {
+              const val = data.errors[key];
+              parts.push(`${key}: ${Array.isArray(val) ? val.join(' ') : val}`);
+            }
+            message = parts.join(' | ');
           }
-          message = parts.join(' | ');
         }
+      } catch {
+        // response is not JSON, keep status message
       }
-    } catch {
-      // response is not JSON, keep status message
     }
+    
     throw new Error(message);
   }
 
-  return response.json();
+  throw new Error('Impossible de joindre le serveur API');
 };
 
 export const checkBackendHealth = async () => {

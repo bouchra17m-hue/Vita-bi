@@ -183,7 +183,7 @@ function makeRequest(url) {
 }
 
 export default async function handler(req, res) {
-  const BACKEND_URL = 'https://vitabi-backend.boushera-bai.alwaysdata.net';
+  const BACKEND_URL = 'https://boushera-bai.alwaysdata.net';
   
   // CORS
   res.setHeader('Access-Control-Allow-Origin', '*');

@@ -14,7 +14,7 @@ return [
         'https://vita-bi.vercel.app',
         'https://*.vercel.app',
         'https://vitabi-*.vercel.app',
-        'https://vitabi-backend.boushera-bai.alwaysdata.net',
+        'https://boushera-bai.alwaysdata.net',
     ],
 
     'allowed_origins_patterns' => [],

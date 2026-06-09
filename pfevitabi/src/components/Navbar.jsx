@@ -20,7 +20,7 @@ const Navbar = () => {
       return;
     }
 
-    // Fermer le tiroir du panier et ouvrir la modale de paiement s├®curis├®
+    // Fermer le tiroir du panier et ouvrir la modale de paiement sécurisé
     setIsCartOpen(false);
     setIsPaymentOpen(true);
   };
@@ -51,10 +51,9 @@ const Navbar = () => {
             Calculateur
 
             </NavLink>
-            <NavLink className="nav-link" to="/about" end>
-            ├Ç propos
-
-            </NavLink>
+<NavLink className="nav-link" to="/about" end>
+             À propos
+             </NavLink>
             {user?.is_admin && (
               <NavLink className="nav-link" to="/admin" end>
               Admin
@@ -72,7 +71,7 @@ const Navbar = () => {
             {user ? (
               <div className="flex items-center gap-4">
                 <Link to="/profile" style={{ textDecoration: 'none', color: 'inherit' }} className="font-bold text-sm hidden md:inline-block hover:underline">Salut, {user.name}</Link>
-                <button onClick={logout} className="btn" style={{ border: '1px solid var(--outline)', padding: '0.5rem 1rem', borderRadius: '9999px', fontSize: '14px' }}>D├®connexion</button>
+                <button onClick={logout} className="btn" style={{ border: '1px solid var(--outline)', padding: '0.5rem 1rem', borderRadius: '9999px', fontSize: '14px' }}>Déconnexion</button>
               </div>
             ) : (
               <Link to="/login" className="btn btn-primary navbar-signup">Sign Up</Link>
@@ -107,7 +106,7 @@ const Navbar = () => {
                       <div style={{ minWidth: 0 }}>
                         <span style={{ display: 'block', fontSize: '0.68rem', fontWeight: 800, letterSpacing: '0.08em', textTransform: 'uppercase', color: 'var(--secondary)', marginBottom: '0.2rem' }}>{item.label || item.category}</span>
                         <h4 style={{ fontWeight: 700, fontSize: '14px', marginBottom: '0.25rem' }}>{item.name}</h4>
-                        <p style={{ fontSize: '12px', color: 'var(--on-surface-variant)', marginBottom: '0.5rem' }}>{item.price}Ôé¼ x {item.quantity || 1}</p>
+                        <p style={{ fontSize: '12px', color: 'var(--on-surface-variant)', marginBottom: '0.5rem' }}>{item.price}€ x {item.quantity || 1}</p>
                         <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
                           <button className="btn" style={{ width: '2rem', height: '2rem', padding: 0, borderRadius: '50%', backgroundColor: 'white', border: '1px solid var(--outline-variant)' }} onClick={() => updateQuantity(item.cartId, -1)} aria-label={`Retirer un ${item.name}`}>
                             <span className="material-symbols-outlined" style={{ fontSize: '1rem' }}>remove</span>
@@ -117,7 +116,7 @@ const Navbar = () => {
                             <span className="material-symbols-outlined" style={{ fontSize: '1rem' }}>add</span>
                           </button>
                         </div>
-                        <p style={{ fontWeight: 900, color: 'var(--primary)', marginTop: '0.5rem' }}>Sous-total: {((parseFloat(item.price) || 0) * (item.quantity || 1)).toFixed(2)}Ôé¼</p>
+                        <p style={{ fontWeight: 900, color: 'var(--primary)', marginTop: '0.5rem' }}>Sous-total: {((parseFloat(item.price) || 0) * (item.quantity || 1)).toFixed(2)}€</p>
                       </div>
                       <button className="btn" style={{ color: 'var(--error)', padding: '0.5rem' }} onClick={() => removeFromCart(item.cartId)} aria-label={`Supprimer ${item.name}`}>
                         <span className="material-symbols-outlined">delete</span>
@@ -132,7 +131,7 @@ const Navbar = () => {
               <div style={{ borderTop: '1px solid var(--outline-variant)', paddingTop: '2rem' }}>
                 <div className="flex justify-between items-center mb-4">
                   <span style={{ fontWeight: 700, fontSize: '1.125rem' }}>Total</span>
-                  <span style={{ fontWeight: 900, fontSize: '1.5rem', color: 'var(--on-surface)' }}>{totalCart}Ôé¼</span>
+                  <span style={{ fontWeight: 900, fontSize: '1.5rem', color: 'var(--on-surface)' }}>{totalCart}€</span>
                 </div>
                 <button className="btn btn-primary" style={{ width: '100%', padding: '1rem', borderRadius: '9999px', fontWeight: 700 }} onClick={handleCheckout}>Commander</button>
               </div>
