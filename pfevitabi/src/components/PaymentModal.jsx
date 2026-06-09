@@ -144,7 +144,9 @@ const PaymentModal = ({ isOpen, onClose, totalAmount }) => {
           navigate('/profile');
         }, 2500);
       } catch (err) {
-        setFailureReason(err.message || 'Erreur lors du traitement du paiement');
+        console.error('Erreur paiement:', err);
+        const errorMessage = err?.message || 'Une erreur inconnue s\'est produite. Veuillez réessayer.';
+        setFailureReason(errorMessage);
         setPaymentStep('failed');
       }
     }, 2000);
