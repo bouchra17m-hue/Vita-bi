@@ -379,19 +379,75 @@ const PaymentModal = ({ isOpen, onClose, totalAmount }) => {
               <div className="success-checkmark-ring"></div>
               <span className="material-symbols-outlined success-check-icon">check_circle</span>
             </div>
-            <h2 className="animate-fade-up">Paiement Réussi !</h2>
-            <p className="animate-fade-up">Votre transaction a été approuvée avec succès. Votre commande a été enregistrée.</p>
-            <div className="success-details animate-fade-up">
-              <div className="detail-row">
-                <span>Montant payé</span>
-                <strong>{totalAmount}€</strong>
+            <h2 className="animate-fade-up" style={{ marginTop: '1.5rem', fontSize: '1.75rem', fontWeight: 900, color: 'var(--on-surface)' }}>Paiement Réussi! ✓</h2>
+            <p className="animate-fade-up" style={{ marginTop: '0.5rem', fontSize: '1rem', color: 'var(--on-surface-variant)' }}>Votre transaction a été approuvée avec succès.</p>
+            <p className="animate-fade-up" style={{ fontSize: '0.95rem', color: 'var(--on-surface-variant)', marginTop: '0.5rem' }}>Votre commande a été enregistrée et votre panier a été vidé.</p>
+            <div className="success-details animate-fade-up" style={{ marginTop: '1.5rem', backgroundColor: 'var(--surface-container-low)', padding: '1rem', borderRadius: '12px' }}>
+              <div className="detail-row" style={{ display: 'flex', justifyContent: 'space-between', paddingBottom: '0.5rem', borderBottom: '1px solid var(--outline-variant)' }}>
+                <span style={{ color: 'var(--on-surface-variant)' }}>Montant payé</span>
+                <strong style={{ color: 'var(--primary)', fontSize: '1.1rem' }}>{totalAmount}€</strong>
               </div>
-              <div className="detail-row">
-                <span>Statut de la commande</span>
-                <span className="badge-completed">Complétée</span>
+              <div className="detail-row" style={{ display: 'flex', justifyContent: 'space-between', marginTop: '0.5rem' }}>
+                <span style={{ color: 'var(--on-surface-variant)' }}>Statut de la commande</span>
+                <span style={{ backgroundColor: 'var(--primary-fixed)', color: 'var(--on-primary-fixed)', padding: '0.25rem 0.75rem', borderRadius: '9999px', fontSize: '0.85rem', fontWeight: 700 }}>✓ Complétée</span>
               </div>
             </div>
-            <p className="redirect-hint animate-fade-up">Redirection vers votre profil dans quelques instants...</p>
+            <p className="redirect-hint animate-fade-up" style={{ marginTop: '1.5rem', fontSize: '0.9rem', color: 'var(--on-surface-variant)', fontStyle: 'italic' }}>Redirection vers votre profil dans quelques instants...</p>
+          </div>
+        )}
+
+        {paymentStep === 'failed' && (
+          <div className="payment-failed-screen">
+            <div className="failed-icon-container" style={{ textAlign: 'center', marginBottom: '1.5rem' }}>
+              <span className="material-symbols-outlined" style={{ fontSize: '4rem', color: 'var(--error)', display: 'block' }}>cancel</span>
+            </div>
+            <h2 style={{ marginTop: '1rem', fontSize: '1.75rem', fontWeight: 900, color: 'var(--on-surface)', textAlign: 'center' }}>Paiement Échoué</h2>
+            <p style={{ marginTop: '0.5rem', fontSize: '1rem', color: 'var(--on-surface-variant)', textAlign: 'center' }}>Une erreur s'est produite lors du traitement de votre paiement.</p>
+            <div className="failure-details" style={{ marginTop: '1.5rem', backgroundColor: 'var(--error-container)', padding: '1rem', borderRadius: '12px', border: '1px solid var(--error)' }}>
+              <p style={{ color: 'var(--on-error-container)', fontSize: '0.95rem', margin: 0 }}>
+                <span className="material-symbols-outlined" style={{ verticalAlign: 'middle', marginRight: '0.5rem', fontSize: '1.2rem' }}>info</span>
+                {failureReason || 'Veuillez vérifier vos données et réessayer.'}
+              </p>
+            </div>
+            <button 
+              onClick={() => setPaymentStep('form')}
+              style={{ 
+                width: '100%', 
+                marginTop: '1.5rem', 
+                padding: '0.75rem 1.5rem', 
+                backgroundColor: 'var(--primary)', 
+                color: 'white', 
+                border: 'none', 
+                borderRadius: '9999px', 
+                fontSize: '1rem', 
+                fontWeight: 700, 
+                cursor: 'pointer',
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+                gap: '0.5rem'
+              }}
+            >
+              <span className="material-symbols-outlined" style={{ fontSize: '1.25rem' }}>refresh</span>
+              Réessayer
+            </button>
+            <button 
+              onClick={onClose}
+              style={{ 
+                width: '100%', 
+                marginTop: '0.5rem', 
+                padding: '0.75rem 1.5rem', 
+                backgroundColor: 'transparent', 
+                color: 'var(--primary)', 
+                border: '2px solid var(--outline-variant)', 
+                borderRadius: '9999px', 
+                fontSize: '1rem', 
+                fontWeight: 700, 
+                cursor: 'pointer'
+              }}
+            >
+              Fermer
+            </button>
           </div>
         )}
 
